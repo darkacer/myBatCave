@@ -202,8 +202,3 @@ export default class Ganttchart extends LightningElement {
 	}
 	
 }
-
-
-
-
-
