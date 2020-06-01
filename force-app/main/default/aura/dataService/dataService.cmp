@@ -1,0 +1,21 @@
+<aura:component implements="flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId"
+                	controller="optyController">
+
+    <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
+        <lightning:recordEditForm aura:id="recordViewForm" 
+                                  recordId="{!v.recordId}"
+                                  recordTypeId="012R00000000000000"
+                                  objectApiName="Contact">
+            <lightning:messages />
+            <lightning:inputField fieldName="FirstName" />
+            <lightning:inputField fieldName="LastName" />
+            <lightning:inputField fieldName="CreatedDate" />
+            <lightning:inputField fieldName="Phone" />
+            <!--Picklist-->
+            <lightning:button aura:id="submit" type="submit" label="Update record" 
+                              class="slds-m-top_medium" onclick="{!c.update}"/>
+        </lightning:recordEditForm>
+       
+    </div>
+    
+</aura:component>

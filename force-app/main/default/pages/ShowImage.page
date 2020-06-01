@@ -1,0 +1,13 @@
+<apex:page StandardController="Opportunity" extensions="myextension">
+<head>
+    <script>
+    	function isLightningDesktop() {
+    		return( "{! $User.UIThemeDisplayed }" == "Theme4d");
+		}
+    	alert(isLightningDesktop());
+    </script>
+</head>
+<body>
+   
+</body>
+</apex:page>

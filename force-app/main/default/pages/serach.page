@@ -1,0 +1,30 @@
+<apex:page controller="SearchClass" >
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pagemessages />
+            <apex:pageBlockSection title="Search Criteria"  collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Account Name:"/>
+                    <apex:inputText value="{!nameQuery}" required="true" label="Account Name"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:CommandButton action="{!execute}" value="Search"  />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlock rendered="{!isTableExit}">
+                
+                
+                <apex:pageBlockTable value="{!accounts}" var="p"  >
+                    <apex:column >
+                        <apex:outputLink target="_blank" value="/{!p.id}">{!p.Name}</apex:outputLink>
+                    </apex:column>
+                    
+                    <apex:column value="{!p.phone}"/>
+                    
+                </apex:pageBlockTable>
+                <apex:commandLink action="{!previous}" rendered="{!hasPrevious}">&lt; Previous</apex:commandLink> &nbsp; &nbsp; 
+                <apex:commandLink action="{!next}" rendered="{!hasNext}">Next &gt; </apex:commandLink>
+            </apex:pageBlock>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

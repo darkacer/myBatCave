@@ -1,0 +1,7 @@
+<template>
+    <lightning-input type='date' label='Start Date' class='sdate'></lightning-input>
+    <lightning-input type='date' label='End Date' class='edate'></lightning-input>
+    <lightning-button label='Get Accounts' value='Account' onclick={handleClick}></lightning-button>
+    <lightning-button label='Get Opportunity' value='Opportunity' onclick={handleClick}></lightning-button>
+    <c-child-display my-child-list={myList} s-object-type={objectType}></c-child-display>
+</template>

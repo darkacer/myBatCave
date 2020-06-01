@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller='searchControllerClass'>
+	<forceChatter:publisher context="RECORD" recordId="a0A7F000005lgsDUAQ" />
+    <forceChatter:feed type="Record" subjectId="a0A7F000005lgsDUAQ"/> 
+</aura:component>

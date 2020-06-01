@@ -1,0 +1,33 @@
+<apex:page showHeader="false">
+    this is part of vf page has changed
+    <apex:includeLightning />
+    
+    
+      <meta charset="utf-8" />
+      <meta http-equiv="x-ua-compatible" content="ie=edge" />
+      <title>Cricket Score</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+      
+        <apex:slds />
+    
+    
+    <div style="width:100%;height:100px;" id="FlipcardContainer" />
+    
+    <script>
+    $Lightning.use("c:LightningOutContainerApp", function() {
+        $Lightning.createComponent("c:FlipCard",
+                                   { 
+                                       borderColor : "#16325c", 
+                                       bgColor : "#16325c" ,
+                                       fontColor : "#FFF",
+                                       frontText : "What's cool about Lightning Component Development",
+                                       backText : "You dont need to enable Lightning experience, It will work on Classic Instance as well"
+                                   },
+                                   "FlipcardContainer",
+                                   function(cmp) {
+                                       console.log('Component created, do something cool here');
+                                   });
+    });
+    </script>
+</apex:page>

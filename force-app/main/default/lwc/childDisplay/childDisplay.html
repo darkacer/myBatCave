@@ -1,0 +1,7 @@
+<template>yelp
+    <template if:true={myChildList}>
+        <template for:each={myChildList} for:item="item">
+            <p key={item.Id}>{item.Name}<lightning-button label={item.Id} value={item.Id} onclick={handleContactView}></lightning-button></p>
+        </template>
+    </template>
+</template>

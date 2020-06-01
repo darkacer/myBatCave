@@ -1,0 +1,97 @@
+<apex:page controller="JiraIntegrationController" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">    
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+
+<head>
+  <title>Salesforce Lightning Design System Trailhead Module</title>
+  
+</head>    
+
+<body>
+  <!-- REQUIRED SLDS WRAPPER -->
+ <div class="slds">    
+
+  <p>Salesforce-Jira Integration Demo. UI desinged using Salesforce Lightning Design System</p>
+  
+
+ 
+ <div class="slds-page-header" role="banner">
+
+  <div class="slds-grid">
+
+    <div class="slds-col">
+   
+    <div class="slds-media">
+      <div class="slds-media__figure">
+       <span class="slds-avatar slds-avatar--large">
+
+       </span>
+      </div>
+      <div class="slds-media__body">
+       <p class="slds-text-heading--label">Issues</p>
+       <h1 class="slds-text-heading--medium">My Issues</h1>
+      </div>
+   </div>
+   </div>
+
+  </div>
+  <!-- / LAYOUT GRID -->
+  <p class="slds-text-body--small slds-m-top--x-small">COUNT items</p>
+</div>
+
+<div class="myapp">  
+
+  <div id="accountList" class="slds-p-vertical--medium"></div>
+  
+</div>
+
+
+
+<footer role="contentinfo" class="slds-p-around--large">
+  
+  <div class="slds-grid slds-grid--align-spread">
+    <p class="slds-col">Salesforce-Jira Integration Example.</p>
+    <p class="slds-col">&copy; iambatman.com</p>
+ 
+  </div>
+  
+</footer>
+
+</div>
+  
+</body>    
+
+
+<script>
+	var outputDiv = document.getElementById("accountList");    
+  	var issues={};
+    console.log('hello!!!!!!');
+     <apex:repeat value="{!supportIssues}" var="thing">
+      issues['{!thing.Issue_Key__c}']='{!thing.Summary__c}';
+  	</apex:repeat>
+    updateOutputDiv();
+    
+    function updateOutputDiv() {
+     var accountIcon = '<span class="slds-icon__container slds-icon-standard-account">';
+     accountIcon += '<svg aria-hidden="true" class="slds-icon">';
+     
+     accountIcon += '</svg><span class="slds-assistive-text">Account</span></span>';  
+	console.log('hello');
+     var html = '<div class="slds-scrollable--x"><table class="slds-table slds-table--bordered">';  
+
+     html += '<thead><tr><th scope="col">Type</th>';
+     html += '<th scope="col">Issue Key</th>';
+     html += '<th scope="col">Summary</th></tr></thead><tbody>';
+
+    for (var key in issues) {
+         html += '<tr><td>' + accountIcon + '</td>';
+         html += '<td>' + key+ '</td>';
+         html += '<td>' + issues[key] + '</td></tr>';
+     };
+     html = html + '</tbody></table></div>';
+     outputDiv.innerHTML = html;
+        console.log(issues);
+}
+    </script>
+</html>
+</apex:page>

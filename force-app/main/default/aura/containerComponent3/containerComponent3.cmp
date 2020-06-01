@@ -1,0 +1,23 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    sdfd
+    <ui:button label="lightning-fexi-component-button" press="{!c.openmodal}" />         
+    <div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="Modalbox" class="slds-modal slds-modal_large">        
+        <div class="slds-modal__container" style="width: 95% !important; max-width: 81rem; !important">           
+            <div class="slds-modal__header">
+                
+            </div>          
+            <div class="slds-modal__content slds-p-around--medium"> 
+                
+                <div>
+                    
+                    <c:optyComponent /> <!-- Some Content for the Modal pop -->
+                    
+                </div>            </div>            
+            <div class="slds-modal__footer">
+                <ui:button label="close" press="{!c.closeModal}" />            
+            </div>        
+        </div>   
+    </div>  
+    <div class="slds-backdrop " aura:id="Modalbackdrop"></div>
+    
+</aura:component>

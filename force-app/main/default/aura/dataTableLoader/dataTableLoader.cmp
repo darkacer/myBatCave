@@ -1,0 +1,12 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="searchControllerClass" >
+    test
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:attribute name="filter" type="String" />
+    <aura:attribute name="data" type="List" />
+    <aura:attribute name="filteredData" type="List" />
+    <aura:attribute name="columns" type="List" />
+    
+    
+    <lightning:input type="text" onchange="{!c.filter}" value="{!v.filter}" label="Filter" />
+    <lightning:datatable keyField="name" columns="{!v.columns}" data="{!v.filteredData}" />
+</aura:component>

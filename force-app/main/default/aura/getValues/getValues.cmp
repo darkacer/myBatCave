@@ -1,0 +1,24 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+	
+    <aura:handler name="change" value="{!v.simpleRecord.Age__c}" action="{!c.valueupdated}" />
+    <aura:attribute name='firstname' type='String'/>
+    <aura:attribute name="recordId" type='String'/>
+    <aura:attribute name="record" type="Object" 
+                    description="The record object to be displayed"/>
+    <aura:attribute name="simpleRecord" type="Object" 
+                    description="A simplified view record object to be displayed"/>
+    <aura:attribute name="recordError" type="String" 
+                    description="An error message bound to force:recordData"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.simpleRecord}"
+                      mode="VIEW"/>
+  
+!    hellow!!@!!!type
+    {!v.simpleRecord.Age__c}
+    <lightning:input aura:id="quoteField" name="name" label="Name" value="{!v.simpleRecord.Age__c}" class='slds-hidden' required="true" />
+</aura:component>

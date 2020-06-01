@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="ShowContacts" icon-name="custom:custom57">
+        <lightning-input type="number" value={mynumber} onchange={updatedValue}></lightning-input>
+        <div class="slds-m-around_medium">
+            Showing {mynumber} Contacts at once
+            <template if:true={myList.data}>
+                <template for:each={myList.data} for:item="item">
+                    <p key={item.Id}>{item.Name}</p>
+                </template>
+            </template>
+        </div>
+        <lightning-input type="text" required></lightning-input>
+    </lightning-card>
+</template>

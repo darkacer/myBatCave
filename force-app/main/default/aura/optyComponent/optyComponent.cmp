@@ -1,0 +1,26 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes" controller='optyController'>
+	<!--<aura:attribute name="setMeOnInit" type="String" default="default value" /> -->
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+    
+    <!--<p>This value is set in the controller after the component initializes and before rendering.</p>
+    <p><b>{!v.setMeOnInit}</b></p> -->
+    
+    
+    
+    
+    
+huhsdsyf3444444444
+    
+    
+        <aura:attribute name="srcvalue" type="string" default="/SachinImages/1image.jpg"/>
+
+ 
+
+        <a onclick="{!c.handleClick}">link to record</a>
+    		
+            <iframe aura:id="srcid" src="{!v.srcvalue}" width="100%" height="500px;" frameBorder="0"/>
+     		<!-- <iframe src="{! '/apex/AccountList?id=' + v.recordId }" width="100%" height="500px;" frameBorder="0"/> -->
+
+    
+    
+</aura:component>

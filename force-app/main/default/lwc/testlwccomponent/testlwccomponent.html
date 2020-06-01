@@ -1,0 +1,14 @@
+<template>
+    time is up lets go {myname}
+    <!-- <lightning-input type="text" value={myname} onchange={changeHappend}></lightning-input>
+    <lightning-input type="text" class='title' value={title}></lightning-input>
+    <lightning-input type="text" class='message' value={message}></lightning-input>
+    <lightning-input type="text" class='variant' value={variant}></lightning-input> -->
+    <lightning-input type="text" value={accname} class='input1'></lightning-input>
+    <lightning-button type='submit' label='Click ME!' onclick={callApex}></lightning-button>
+    <template if:true={Accounts}>
+        <template for:each={Accounts} for:item='account'>
+                <li key={account.Id}>{account.Name} --- {account.Id} </li>
+        </template>
+    </template>
+</template>

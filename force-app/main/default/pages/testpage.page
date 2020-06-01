@@ -1,0 +1,29 @@
+<apex:page standardController="Opportunity" recordSetVar="opportunities">
+   <apex:form >
+      <apex:pageBlock title="Edit Stage and Close Date" mode="edit">
+         <apex:pageMessages />
+         <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+         </apex:pageBlockButtons>
+         <apex:pageBlockTable value="{!selected}" var="opp">
+            <apex:column value="{!opp.name}"/>
+            <apex:column headerValue="Stage">
+               <apex:inputField value="{!opp.stageName}"/>
+                <apex:inputField value="{!opp.stageName}"/>
+            </apex:column>
+            <apex:column headerValue="Close Date">
+               <apex:inputField value="{!opp.closeDate}"/>
+            </apex:column>
+         </apex:pageBlockTable>
+          
+          
+          
+          <apex:pageBlockSection columns="1" id="mainSection" title="Reject">
+                <apex:inputField value="{!Opportunity.Name}" required="true" />
+                <apex:inputField value="{!Opportunity.stageName}" required="true" />
+                <apex:inputField value="{!Opportunity.closeDate}" required="true" style="width: 360px; height: 80px"/>
+          </apex:pageBlockSection>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>

@@ -1,0 +1,37 @@
+<apex:page controller="MySearchClass">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageMessages />
+            
+            <apex:pageBlockSection title="Search Criteria"  collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Contact Name:"/>
+                    <apex:inputText value="{!nameQuery}" required="true" label="Contact Name"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:CommandButton action="{!execute}" value="Search"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlock rendered="{!isTableExit}">
+                <apex:pageBlockButtons location="top">
+                    <apex:commandButton action="{!cancel}" value="Cancel"/>
+                </apex:pageBlockButtons>
+                <apex:pageBlockTable value="{!contacts}" var="ct">
+                    <apex:column >
+                        <apex:outputLink target="_blank" value="/{!ct.id}">{!ct.FirstName}</apex:outputLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:outputLink target="_blank" value="/{!ct.id}">{!ct.LastName}</apex:outputLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+                
+                <apex:commandLink action="{!first}">First</apex:commandlink>&nbsp;&nbsp;
+                <apex:commandLink action="{!con.previous }" value="« Previous" rendered="{!hasPrevious}"/>&nbsp;&nbsp;  
+                <apex:commandLink action="{!con.next }" value="Next »" rendered="{!hasNext}"/>&nbsp;&nbsp;
+                <apex:commandLink action="{!last}">Last</apex:commandlink>
+                
+            </apex:pageBlock>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

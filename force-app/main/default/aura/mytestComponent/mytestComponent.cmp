@@ -1,0 +1,19 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="optyController">
+	<aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="contact" type="Contact" default="{ 'sobjectType': 'Contact' }"/>  
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}" />his
+    <form>	
+		
+        <force:inputField value="{!v.contact.Name}"/>
+    	<force:inputField value="{!v.contact.CreatedDate}"/>
+        <ui:inputText value="{!v.contact.Name}"/>
+        <ui:inputText value="{!v.contact.CreatedDate}"/>
+        
+        
+        
+        
+        
+		
+<lightning:button label="Create Expense" class="slds-m-top--medium" variant="brand" onclick="{!c.clickCreate}"/>  
+    </form>
+</aura:component>
