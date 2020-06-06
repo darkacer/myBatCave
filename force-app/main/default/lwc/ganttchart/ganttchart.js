@@ -5,58 +5,36 @@ import momentJS from "@salesforce/resourceUrl/momentJS";
 
 import getChartData from "@salesforce/apex/GanttChartController.getGanttData";
 
-
 export default class Ganttchart extends LightningElement {
-	
-	@api defaultView
-	@track startDateUTC
-	@track projects;
-	@track formattedStartDate
-	@track formattedEndDate
-	@track datePickerString
+    
+    @api recordId;
+    @api defaultView;
+    @api methodName = 'getGanttDataMileStone';
+
+    @track projects=[];
+	@track startDateUTC;
+	@track formattedStartDate;
+	@track formattedEndDate;
+	@track datePickerString;
 	@track dates;
 	@track dateShift = 7;
 	
 	@track returnedData;
-	
-	
+
 	@track view = {
 		options: [
-			{
-				label: "View by Day",
-				value: "1/14"
-			},
-			{
-				label: "View by Week",
-				value: "7/10"
-			}
+			{label: "View by Day", value: "1/14"},
+			{label: "View by Week", value: "7/10"}
 		],
 		slotSize: 1,
 		slots: 14
 	};
-	
-	
+
 	connectedCallback() {
-		/*Promise.all([
-			loadScript(this, momentJS)
-		])
-		*/
-		
 		loadScript(this, momentJS)
 		.then(() => {
-			/*
-			switch (this.defaultView) {
-				case "View by Day":
-					//this.setView([1, 14]);
-					break;
-				default:
-					//this.setView([7, 10])
-			}
-			*/
-			
 			this.setStartDate(new Date());
 			this.handleRefresh();
-			
 		});
 	}
 	
@@ -72,13 +50,13 @@ export default class Ganttchart extends LightningElement {
 							.toDate();
 			
 			this.startDateUTC = moment(this.startDate)
-								.utc()
+							    .utc()
 								.valueOf() - moment(this.startDate)
-								.utcOffset() * 60 * 1000 + "";
-			this.formattedStartDate = this.startDate.toLocaleString();
-			
-
-			this.setDateHeaders()
+                                .utcOffset() * 60 * 1000 + "";
+            console.log("normal date", this.startDate);
+			//this.formattedStartDate = this.startDate.toLocaleString();
+            this.formattedStartDate = moment(this.startDate).format('DD-MMM-YYYY');
+			this.setDateHeaders();
 		}
 	}
 	
@@ -91,8 +69,8 @@ export default class Ganttchart extends LightningElement {
 						.utc()
 						.valueOf() -
 						moment(this.endDate).utcOffset() * 60 * 1000 + "";
-		this.formattedEndDate = this.endDate.toLocaleString();
-		
+		//this.formattedEndDate = this.endDate.toLocaleString();
+		this.formattedEndDate = moment(this.endDate).format('DD-MMM-YYYY');
 		console.log('formattedStartDate ', this.formattedStartDate)
 		console.log('formattedEndDate ', this.formattedEndDate)
 		
@@ -141,22 +119,54 @@ export default class Ganttchart extends LightningElement {
 
 		// reorder index
 		console.log('dates -> ', dates)
-		this.dates = Object.values(dates);
-
+        this.dates = Object.values(dates);
+        
+        Array.from(
+            this.template.querySelectorAll("c-ganttallocation")
+        ).forEach(resource => {
+            resource.refreshDates(this.startDate, this.endDate, this.view.slotSize);
+        });
 
 	}
 	
 	handleRefresh() {
 
 		getChartData({
-			recordId: 'omkar',
+			recordId: this.recordId,
 			startDateStr: this.startDateUTC,
-			endDateStr: this.endDateUTC
+            endDateStr: this.endDateUTC,
+            slotSize:this.view.slotSize
 		})
 		.then(data => {
+            this.projects = []
 			if (data) {
-				console.log('data is ', data)
-				
+				console.log('data is ', JSON.stringify(data))
+  
+                this.projects.forEach(function (resource, i) {
+                    this.projects[i] = {
+                        Id: resource.Id,
+                        Name: resource.projectName,
+                        //Default_Role__c: resource.Default_Role__c,
+                        taskDataList: {}
+                    };
+                });
+                
+                console.log('self resources are 1-> ', JSON.stringify(this.projects))
+                console.log('self resources are 3-> ', this.projects.length)
+                let tempProjects = {...this.projects};
+                data.forEach(newResource => {
+                    console.log("projects => ", tempProjects)
+                    for (let i = 0; i < tempProjects.length; i++) {
+                        if (this.projects[i].Id === newResource.Id) {
+                            this.projects[i] = {...newResource};
+                            return;
+                        }
+                    }
+        
+                    this.projects.push({...newResource});
+                });
+
+                console.log('self resources are 2-> ', JSON.stringify(this.projects))
 			}
 		})
 	}

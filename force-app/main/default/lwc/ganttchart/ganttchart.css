@@ -7,11 +7,14 @@
 }
 
 .lwc-chart_container {
-    min-width: 725px;
+    min-width: 650px;
 }
 
 .lwc-timeline > .slds-col:first-child {
     min-width: 190px;
+}
+.lwc-header {
+    min-width: 100px;
 }
 
 .lwc-timeline_day {
@@ -23,7 +26,6 @@
 .lwc-timeline_month-container:first-child .lwc-timeline_day:first-child,
 .lwc-timeline_month-container:only-child .lwc-timeline_day:first-child {
     border-left: 3px solid #dddbda;
-    
 }
 
 .lwc-timeline_month-container:last-child .lwc-timeline_day:last-child,
@@ -41,6 +43,7 @@
     background: rgba(21, 137, 238, 0.1);
     border-top: 3px solid #1589ee;
     margin-top: 3px;
+    padding-left: 5px;
 }
 
 .lwc-timeline_month {

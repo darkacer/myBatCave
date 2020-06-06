@@ -7,4 +7,9 @@
         <target>lightning__RecordPage</target>
         <target>lightning__HomePage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="methodName" type="String"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

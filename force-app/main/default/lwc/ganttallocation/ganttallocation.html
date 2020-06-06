@@ -1,3 +1,67 @@
 <template>
-    
+    <!--Grid start-->
+    <div class="slds-grid">
+      <!-- Resource Info -->
+      <div class="slds-col slds-size_1-of-6 slds-p-around_small slds-truncate lwc-resource">
+        <div class="slds-media slds-media_center">
+          <!-- <div class="slds-media__figure">
+                      <lightning-icon icon-name="action:user" size="x-small"></lightning-icon>
+                  </div> -->
+          <div class="slds-media__body slds-truncate">
+            <h3 class="slds-text-body_default">
+              {project.projectName}
+            </h3>
+            <h3 class="slds-text-body_small slds-text-color_weak">
+              {project.id}
+            </h3>
+          </div>
+        </div>
+      </div>
+      <!-- Resource Info -->
+  
+      <div class="slds-col slds-is-relative">
+        <!--Time Slots-->
+        <div class="slds-grid slds-is-absolute lwc-timeslots-container">
+          <template for:each={times} for:item="time" for:index="index">
+            <div key={time} class={time.class} data-index={index} data-start={time.start} data-end={time.end}>
+              <!-- nothing -->
+            </div>
+          </template>
+        </div>
+        <!--!Time Slots-->
+  
+        <!-- Allocations -->
+        <div class="lwc-allocations-container">
+          <!--test-->
+          <template for:each={tasks} for:item="allocation" for:index="projectIndex">
+            <!-- Project Container -->
+            <div key={allocation.id} class="slds-is-relative project-container slds-p-around_xx-small">
+              &nbsp;
+              <div key={allocation.Id} class={allocation.Id}>
+                <div title={allocation.Name} class={allocation.class} style={allocation.style} data-id={allocation.Id} data-project={projectIndex} data-allocation={allocationIndex}>
+                  <div class="slds-grid slds-grid_vertical-align-center">
+                    <div class="slds-col slds-grow-none lwc-allocation_actions">
+                      <!-- <lightning-button-icon icon-name="utility:down" variant="bare-inverse" size="small"
+                                                  onclick={openAllocationMenu} data-id={allocation.Id}></lightning-button-icon> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="slds-truncate slds-is-absolute lwc-allocation-label" style={allocation.labelStyle}>
+                  <span if:true={allocation.taskName}>
+                    {allocation.taskName}
+                  </span>
+                  <span if:false={allocation.taskName}>
+                    Unavailable
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- /Project Container -->
+          </template>
+          <!--test-->
+        </div>
+        <!-- !Allocations -->
+      </div>
+    </div>
+    <!--!Grid start-->
 </template>

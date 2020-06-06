@@ -17,7 +17,7 @@ public class GanttChartController {
     }
     
     @auraEnabled
-    public static List<ProjectWrapperClass> getGanttData(String recordId, String startDateStr, String endDateStr) {
+    public static List<ProjectWrapperClass> getGanttData(String recordId, String startDateStr, String endDateStr, Integer slotSize) {
         Date startDate = DateTime.newInstance(Long.valueOf(startDateStr)).date();
         Date endDate = DateTime.newInstance(Long.valueOf(endDateStr)).date();
         List<ProjectWrapperClass> returnData = new List<ProjectWrapperClass>();
@@ -30,7 +30,7 @@ public class GanttChartController {
                                  ];
         Map<Id, List<TaskWrapperClass>> projectToTasksMap = new Map<Id, List<TaskWrapperClass>>();
         
-        Integer slotSize = 7;
+        //Integer slotSize = 7;
         
         for (Task__c task : taskList) {
             TaskWrapperClass taskData = new TaskWrapperClass();
