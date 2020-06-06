@@ -2,11 +2,23 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
+            "c/accordianTemplate": [
+                "accordianTemplate/accordianTemplate.js"
+            ],
+            "c/baseComponent": [
+                "baseComponent/baseComponent.js"
+            ],
+            "c/childDisplay": [
+                "childDisplay/childDisplay.js"
+            ],
             "c/childLWC": [
                 "childLWC/childLWC.js"
             ],
             "c/childcomponent": [
                 "childcomponent/childcomponent.js"
+            ],
+            "c/demoComponent": [
+                "demoComponent/demoComponent.js"
             ],
             "c/eventSimple": [
                 "eventSimple/eventSimple.js"
@@ -14,8 +26,20 @@
             "c/firstLWC": [
                 "firstLWC/firstLWC.js"
             ],
+            "c/ganttallocation": [
+                "ganttallocation/ganttallocation.js"
+            ],
+            "c/ganttchart": [
+                "ganttchart/ganttchart.js"
+            ],
             "c/helloWorld": [
                 "helloWorld/helloWorld.js"
+            ],
+            "c/showContacts": [
+                "showContacts/showContacts.js"
+            ],
+            "c/testlwccomponent": [
+                "testlwccomponent/testlwccomponent.js"
             ],
             "c/wireapi": [
                 "wireapi/wireapi.js"

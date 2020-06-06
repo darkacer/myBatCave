@@ -10,6 +10,7 @@ export default class Ganttchart extends LightningElement {
 	
 	@api defaultView
 	@track startDateUTC
+	@track projects;
 	@track formattedStartDate
 	@track formattedEndDate
 	@track datePickerString
