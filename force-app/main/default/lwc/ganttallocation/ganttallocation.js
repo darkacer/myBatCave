@@ -77,6 +77,8 @@ export default class Ganttallocation extends LightningElement {
             }
             tempTask.style = this.calcStyle(tempTask);
             tempTask.labelStyle = this.calcLabelStyle(tempTask);
+            tempTask.showToolTip = false;
+            tempTask.toolTipStyle = /*this.calcLabelStyle(tempTask) +*/"position:absolute;top:-60px;left:3px"
             tempTask.class = ["slds-is-absolute", "lwc-allocation"].join(" ");
             this.tasks.push(tempTask);
         })
@@ -137,5 +139,17 @@ export default class Ganttallocation extends LightningElement {
 
         styles.push("transition: none")
         return styles.join("; ");
+    }
+
+    hoverMouse(event) {
+        this.tasks.forEach(el => {
+            if (event.currentTarget.dataset.record === el.id) el.showToolTip = true
+        })
+    }
+
+    outMouse(event) {
+        this.tasks.forEach(el => {
+            if(event.currentTarget.dataset.record === el.id) el.showToolTip = false; 
+        })
     }
 }

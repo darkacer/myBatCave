@@ -34,11 +34,27 @@
         <div class="lwc-allocations-container">
           <!--test-->
           <template for:each={tasks} for:item="allocation" for:index="projectIndex">
-            <!-- Project Container -->
+            
+
+            <!-- Task Container -->
             <div key={allocation.id} class="slds-is-relative project-container slds-p-around_xx-small">
               &nbsp;
+              <template if:true={allocation.showToolTip}>
+                <div key={allocation.id} class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" 
+                    role="tooltip" id={allocation.tooltipId} style={allocation.toolTipStyle}>
+                  <div key={allocation.id} class="slds-popover__body">
+                    Task {allocation.id}  {allocation.startDate} {allocation.taskName} {allocation.endDate}
+                    Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.
+                  </div>
+                </div>
+              </template>
               <div key={allocation.Id} class={allocation.Id}>
-                <div title={allocation.Name} class={allocation.class} style={allocation.style} data-id={allocation.Id} data-project={projectIndex} data-allocation={allocationIndex}>
+                <a key={allocation.id}
+                        data-record={allocation.id}
+                        onmouseover={hoverMouse}
+                        onmouseout={outMouse}>
+                <div title={allocation.Name} class={allocation.class} style={allocation.style} 
+                    data-id={allocation.Id} data-project={projectIndex} data-allocation={allocationIndex}>
                   <div class="slds-grid slds-grid_vertical-align-center">
                     <div class="slds-col slds-grow-none lwc-allocation_actions">
                       <!-- <lightning-button-icon icon-name="utility:down" variant="bare-inverse" size="small"
@@ -54,9 +70,10 @@
                     Unavailable
                   </span>
                 </div>
+              </a>
               </div>
             </div>
-            <!-- /Project Container -->
+            <!-- /Task Container -->
           </template>
           <!--test-->
         </div>
