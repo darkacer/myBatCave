@@ -135,7 +135,8 @@ export default class Ganttchart extends LightningElement {
 			recordId: this.recordId,
 			startDateStr: this.startDateUTC,
             endDateStr: this.endDateUTC,
-            slotSize:this.view.slotSize
+            slotSize:this.view.slotSize,
+            methodName: this.methodName
 		})
 		.then(data => {
             this.projects = []
@@ -147,7 +148,7 @@ export default class Ganttchart extends LightningElement {
                         Id: resource.Id,
                         Name: resource.projectName,
                         //Default_Role__c: resource.Default_Role__c,
-                        taskDataList: {}
+                        childDataList: {}
                     };
                 });
                 

@@ -29,9 +29,6 @@
             "c/ganttallocation": [
                 "ganttallocation/ganttallocation.js"
             ],
-            "c/ganttchart": [
-                "ganttchart/ganttchart.js"
-            ],
             "c/helloWorld": [
                 "helloWorld/helloWorld.js"
             ],
@@ -43,6 +40,9 @@
             ],
             "c/wireapi": [
                 "wireapi/wireapi.js"
+            ],
+            "c/ganttchart": [
+                "ganttchart/ganttchart.js"
             ]
         },
         "experimentalDecorators": true

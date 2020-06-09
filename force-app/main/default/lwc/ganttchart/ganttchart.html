@@ -1,133 +1,133 @@
 <template>
-    <div class="slds-scope">
-      <div class="slds-card slds-theme_default">
-      
-       <div class="slds-p-around_medium slds-border_bottom">
-          <div class="slds-grid slds-grid_vertical-align-center">
-  
-            <!-- Title (Date Range) -->
-            <div class="slds-col slds-text-align_center">
-              <h1 class="slds-text-heading_small slds-truncate">
-                {formattedStartDate} - {formattedEndDate}		  
-              </h1>
+  <div class="slds-scope">
+    <div class="slds-card slds-theme_default">
+    
+     <div class="slds-p-around_medium slds-border_bottom">
+        <div class="slds-grid slds-grid_vertical-align-center">
+
+          <!-- Title (Date Range) -->
+          <div class="slds-col slds-text-align_center">
+            <h1 class="slds-text-heading_small slds-truncate">
+              {formattedStartDate} - {formattedEndDate}		  
+            </h1>
+          </div>
+          <!-- /Title (Date Range) -->
+          
+          <!-- Date Navigation -->
+          <div class="slds-col slds-grow-none">
+            <div class="slds-show_inline-block">
+              <lightning-button-icon
+                icon-name="utility:left"
+                variant="border-filled"
+                onclick={navigateToPrevious}
+              ></lightning-button-icon>
+              <lightning-button
+                label="Today"
+                onclick={navigateToToday}
+              ></lightning-button>
+              <lightning-button-icon
+                icon-name="utility:right"
+                variant="border-filled"
+                onclick={navigateToNext}
+              ></lightning-button-icon>
             </div>
-            <!-- /Title (Date Range) -->
-            
-            <!-- Date Navigation -->
-            <div class="slds-col slds-grow-none">
-              <div class="slds-show_inline-block">
-                <lightning-button-icon
-                  icon-name="utility:left"
-                  variant="border-filled"
-                  onclick={navigateToPrevious}
-                ></lightning-button-icon>
-                <lightning-button
-                  label="Today"
-                  onclick={navigateToToday}
-                ></lightning-button>
-                <lightning-button-icon
-                  icon-name="utility:right"
-                  variant="border-filled"
-                  onclick={navigateToNext}
-                ></lightning-button-icon>
-              </div>
-              <div class="slds-show_inline-block">
-                <lightning-input
-                  label="Date"
-                  type="date"
-                  name="select-date"
-                  variant="label-hidden"
-                  class="lwc-datepicker slds-m-left_small"
-                  value={datePickerString}
-                  onchange={navigateToDay}
-                ></lightning-input>
-              </div>
-              <!-- View Select -->
-              <div class="slds-show_inline-block">
-                <lightning-combobox
-                  value={view.value}
-                  options={view.options}
-                  onchange={handleViewChange}
-                  variant="label-hidden"
-                  class="slds-m-left_small"
-                  placeholder="View by Day"
-                ></lightning-combobox>
-                <!-- /View Select -->
-              </div>
+            <div class="slds-show_inline-block">
+              <lightning-input
+                label="Date"
+                type="date"
+                name="select-date"
+                variant="label-hidden"
+                class="lwc-datepicker slds-m-left_small"
+                value={datePickerString}
+                onchange={navigateToDay}
+              ></lightning-input>
             </div>
-            <!-- /Date Navigation -->
+            <!-- View Select -->
+            <div class="slds-show_inline-block">
+              <lightning-combobox
+                value={view.value}
+                options={view.options}
+                onchange={handleViewChange}
+                variant="label-hidden"
+                class="slds-m-left_small"
+                placeholder="View by Day"
+              ></lightning-combobox>
+              <!-- /View Select -->
+            </div>
           </div>
-      </div>
-      <!-- Gantt Chart -->
-      <div class="slds-scrollable_x">
-          <div class="slds-p-around_medium lwc-chart_container">
-              <!-- Timeline -->
-              <div class="slds-grid lwc-timeline">
-                  <div class="slds-col slds-size_1-of-6 slds-align-bottom ">
-                      <div class="slds-text-heading_small slds-p-around_small lwc-header">
-                          Milestone Tasks
-                      </div>
-                  </div>
-                  <div class="slds-col">
-                      <div class="slds-grid">
-                          <template for:each={dates} for:item="date">
-                              <div
-                              key={date}
-                              class="slds-col lwc-timeline_month-container"
-                              style={date.style}
-                              >
-                                  <div class="slds-grid">
-                                      <div class="slds-col slds-has-flexi-truncate">
-                                          <div style="margin-left: 1%; margin-right: 1%;" 
-                                          class="lwc-timeline_month slds-p-around_xx-small slds-theme_shade slds-text-align_center slds-text-color_weak slds-text-body_small slds-m-horizontal_x-small slds-truncate">
-                                              {date.name}
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="slds-grid">
-                                      <template for:each={date.days} for:item="day">
-                                          <div key={day} class={day.class} style="align-items: center;
-                                          display: flex;
-                                          flex-direction: column;
-                                          min-width: 50px;
-                                          justify-content: center;">
-                                            <div if:true={day.dayName}>{day.dayName}</div>
-                                            <div>{day.label}</div>
-                                          </div>
-                                      </template>
-                                  </div>
-                              </div>
-                          </template>
-                      </div>
-                  </div>
-              </div>
-      <!--/ Timeline -->
-        <template if:true={projects.length}>
-            <template for:each={projects} for:item="project">
-                <c-ganttallocation
-                    key={project.Id}
-                    class="lwc-resource-component"
-                    project={project}
-                    project-id={projectId}
-                    date-increment={view.slotSize}
-                    start-date={startDate}
-                    end-date={endDate}
-                ></c-ganttallocation>
-            </template>
-        </template>
-
-        <template if:false={projects.length}>
-          <div class="slds-text-align_center slds-p-around_medium">
-            <span class="slds-text-color_weak">There are no Milestone Tasks for the given Date Range</span>
-          </div>
-        </template>
-
-
-          </div>
-      </div>
-      <!-- /Gantt Chart -->
-      
-      </div>
+          <!-- /Date Navigation -->
+        </div>
     </div>
-  
-  </template>
+    <!-- Gantt Chart -->
+    <div class="slds-scrollable_x">
+        <div class="slds-p-around_medium lwc-chart_container">
+            <!-- Timeline -->
+            <div class="slds-grid lwc-timeline">
+                <div class="slds-col slds-size_1-of-6 slds-align-bottom ">
+                    <div class="slds-text-heading_small slds-p-around_small lwc-header">
+                        Milestone Tasks
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <div class="slds-grid">
+                        <template for:each={dates} for:item="date">
+                            <div
+                            key={date}
+                            class="slds-col lwc-timeline_month-container"
+                            style={date.style}
+                            >
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                        <div style="margin-left: 1%; margin-right: 1%;" 
+                                        class="lwc-timeline_month slds-p-around_xx-small slds-theme_shade slds-text-align_center slds-text-color_weak slds-text-body_small slds-m-horizontal_x-small slds-truncate">
+                                            {date.name}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <template for:each={date.days} for:item="day">
+                                        <div key={day} class={day.class} style="align-items: center;
+                                        display: flex;
+                                        flex-direction: column;
+                                        min-width: 50px;
+                                        justify-content: center;">
+                                          <div if:true={day.dayName}>{day.dayName}</div>
+                                          <div>{day.label}</div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+    <!--/ Timeline -->
+      <template if:true={projects.length}>
+          <template for:each={projects} for:item="project">
+              <c-ganttallocation
+                  key={project.Id}
+                  class="lwc-resource-component"
+                  project={project}
+                  project-id={projectId}
+                  date-increment={view.slotSize}
+                  start-date={startDate}
+                  end-date={endDate}
+              ></c-ganttallocation>
+          </template>
+      </template>
+
+      <template if:false={projects.length}>
+        <div class="slds-text-align_center slds-p-around_medium">
+          <span class="slds-text-color_weak">
+            <i>There are no Milestone Tasks for the given Date Range</i>
+          </span>
+        </div>
+      </template>
+    </div>
+  </div>
+    <!-- /Gantt Chart -->
+    
+    </div>
+  </div>
+
+</template>

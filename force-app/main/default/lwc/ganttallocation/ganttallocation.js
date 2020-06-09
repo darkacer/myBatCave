@@ -1,6 +1,9 @@
 import { LightningElement, api, track } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 
-export default class Ganttallocation extends LightningElement {
+const dateOption = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+
+export default class Ganttallocation extends NavigationMixin(LightningElement) {
     @api _project;
     @api projectId;
     @api dateIncrement;
@@ -40,7 +43,6 @@ export default class Ganttallocation extends LightningElement {
                     class: "slds-col lwc-timeslot",
                     start: date.getTime()
                 };
-
                 if (dateIncrement > 1) {
                     let end = new Date(date);
                     end.setDate(end.getDate() + dateIncrement - 1);
@@ -59,7 +61,6 @@ export default class Ganttallocation extends LightningElement {
 
                 times.push(time);
             }
-
             this.times = times;
             this.startDate = startDate;
             this.endDate = endDate;
@@ -70,26 +71,30 @@ export default class Ganttallocation extends LightningElement {
 
     setTasks() {
         this.tasks = []
-
-        Object.keys(this.project.taskDataList).forEach(task => {
+        Object.keys(this.project.childDataList).forEach(task => {
             let tempTask = {
-                ...this.project.taskDataList[task]
+                ...this.project.childDataList[task]
             }
             tempTask.style = this.calcStyle(tempTask);
             tempTask.labelStyle = this.calcLabelStyle(tempTask);
-            tempTask.showToolTip = false;
-            tempTask.toolTipStyle = /*this.calcLabelStyle(tempTask) +*/"position:absolute;top:-60px;left:3px"
+            tempTask.toolTipContent = this.toolTipContent(tempTask)
             tempTask.class = ["slds-is-absolute", "lwc-allocation"].join(" ");
             this.tasks.push(tempTask);
         })
-        //   console.log("Tasks are => ", this.tasks);
+    }
+
+    toolTipContent(tempTask) {
+        return 'From: ' + new Date(tempTask.startDate).toLocaleDateString('en-US', dateOption) + '\n'
+            + 'To: ' + new Date(tempTask.endDate).toLocaleDateString('en-US', dateOption) + '\n'
+            + 'Task Name: ' + tempTask.taskName + '\n'
+            + 'Assigned To: ' + tempTask.assignedTo + '\n'
+            + 'Completion : ' + tempTask.completionPercent + '%\n'
+            + 'Description: ' + tempTask.description + '\n'
+            + 'Completion Date: ' +  tempTask.completedDate
     }
 
     calcStyle(allocation) {
-        if (!this.times) {
-            return;
-        }
-
+        if (!this.times) return
         const totalSlots = this.times.length;
         let styles = [
             "left: " + (allocation.left / totalSlots) * 100 + "%",
@@ -98,24 +103,19 @@ export default class Ganttallocation extends LightningElement {
             "%"
         ];
 
-        if ("Unavailable" !== allocation.Status__c) {
-            const backgroundColor = allocation.color;
-            const colorMap = {
-                Blue: "#1589EE",
-                Green: "#4AAD59",
-                Red: "#E52D34",
-                Turqoise: "#0DBCB9",
-                Navy: "#052F5F",
-                Orange: "#E56532",
-                Purple: "#62548E",
-                Pink: "#CA7CCE",
-                Brown: "#823E17",
-                Lime: "#7CCC47",
-                Gold: "#FCAF32"
-            };
-            styles.push("background-color: " + colorMap[backgroundColor]);
-        }
-
+        const backgroundColor = allocation.color;
+        const colorMap = {
+            Blue: "#1589EE",
+            Green: "#4AAD59",
+            Red: "#E52D34",
+            Turqoise: "#0DBCB9",
+            Navy: "#052F5F",
+            Orange: "#E56532",
+            Purple: "#62548E",
+            Pink: "#CA7CCE",
+            Brown: "#823E17"
+        };
+        styles.push("background-color: " + colorMap[backgroundColor]);
         styles.push("pointer-events: auto");
         styles.push("transition: none");
 
@@ -123,9 +123,7 @@ export default class Ganttallocation extends LightningElement {
     }
 
     calcLabelStyle(allocation) {
-        if (!this.times) {
-            return;
-        }
+        if (!this.times) return;
 
         const totalSlots = this.times.length;
         let left = allocation.left / totalSlots < 0 ? 0 : allocation.left / totalSlots;
@@ -141,15 +139,14 @@ export default class Ganttallocation extends LightningElement {
         return styles.join("; ");
     }
 
-    hoverMouse(event) {
-        this.tasks.forEach(el => {
-            if (event.currentTarget.dataset.record === el.id) el.showToolTip = true
-        })
-    }
-
-    outMouse(event) {
-        this.tasks.forEach(el => {
-            if(event.currentTarget.dataset.record === el.id) el.showToolTip = false; 
-        })
+    handleOpenTaskAction(event) {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: event.currentTarget.dataset.id,
+                objectApiName: 'project_cloud__Project_Task__c',
+                actionName: 'view'
+            }
+        });
     }
 }

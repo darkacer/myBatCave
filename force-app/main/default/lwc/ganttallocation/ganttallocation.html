@@ -1,23 +1,20 @@
 <template>
     <!--Grid start-->
     <div class="slds-grid">
-      <!-- Resource Info -->
+      <!-- project Info -->
       <div class="slds-col slds-size_1-of-6 slds-p-around_small slds-truncate lwc-resource">
         <div class="slds-media slds-media_center">
-          <!-- <div class="slds-media__figure">
-                      <lightning-icon icon-name="action:user" size="x-small"></lightning-icon>
-                  </div> -->
           <div class="slds-media__body slds-truncate">
             <h3 class="slds-text-body_default">
-              {project.projectName}
+              {project.projectRecName}
             </h3>
-            <h3 class="slds-text-body_small slds-text-color_weak">
-              {project.id}
+            <h3 class="slds-text-body_small slds-text-color_weak" title={project.projectName}>
+              {project.projectName}
             </h3>
           </div>
         </div>
       </div>
-      <!-- Resource Info -->
+      <!-- project Info -->
   
       <div class="slds-col slds-is-relative">
         <!--Time Slots-->
@@ -34,32 +31,14 @@
         <div class="lwc-allocations-container">
           <!--test-->
           <template for:each={tasks} for:item="allocation" for:index="projectIndex">
-            
-
-            <!-- Task Container -->
+            <!-- Project Container -->
             <div key={allocation.id} class="slds-is-relative project-container slds-p-around_xx-small">
               &nbsp;
-              <template if:true={allocation.showToolTip}>
-                <div key={allocation.id} class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" 
-                    role="tooltip" id={allocation.tooltipId} style={allocation.toolTipStyle}>
-                  <div key={allocation.id} class="slds-popover__body">
-                    Task {allocation.id}  {allocation.startDate} {allocation.taskName} {allocation.endDate}
-                    Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.
-                  </div>
-                </div>
-              </template>
-              <div key={allocation.Id} class={allocation.Id}>
-                <a key={allocation.id}
-                        data-record={allocation.id}
-                        onmouseover={hoverMouse}
-                        onmouseout={outMouse}>
-                <div title={allocation.Name} class={allocation.class} style={allocation.style} 
-                    data-id={allocation.Id} data-project={projectIndex} data-allocation={allocationIndex}>
+              <div key={allocation.id} data-id={allocation.id} class='hoverMe'
+              title={allocation.toolTipContent} onclick={handleOpenTaskAction}>
+                <div title={allocation.Name} class={allocation.class} style={allocation.style} data-id={allocation.Id} data-project={projectIndex} data-allocation={allocationIndex}>
                   <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col slds-grow-none lwc-allocation_actions">
-                      <!-- <lightning-button-icon icon-name="utility:down" variant="bare-inverse" size="small"
-                                                  onclick={openAllocationMenu} data-id={allocation.Id}></lightning-button-icon> -->
-                    </div>
+                    <div class="slds-col slds-grow-none lwc-allocation_actions"></div>
                   </div>
                 </div>
                 <div class="slds-truncate slds-is-absolute lwc-allocation-label" style={allocation.labelStyle}>
@@ -70,10 +49,9 @@
                     Unavailable
                   </span>
                 </div>
-              </a>
               </div>
             </div>
-            <!-- /Task Container -->
+            <!-- /Project Container -->
           </template>
           <!--test-->
         </div>
