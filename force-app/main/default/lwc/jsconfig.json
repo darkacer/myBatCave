@@ -43,6 +43,9 @@
             ],
             "c/ganttchart": [
                 "ganttchart/ganttchart.js"
+            ],
+            "c/advancedDataTable": [
+                "advancedDataTable/advancedDataTable.js"
             ]
         },
         "experimentalDecorators": true

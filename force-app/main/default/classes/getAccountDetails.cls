@@ -21,4 +21,14 @@ public with sharing class getAccountDetails {
     public static List<Opportunity> getOpportinitysdate(Date start, Date enddate){
         return [Select id, name from Opportunity where createddate > :start AND createddate < :enddate];
     }
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getContactList() {
+        return [
+            SELECT Id, Name, Email, Picture__c
+            FROM Contact
+            WHERE Picture__c != null
+            WITH SECURITY_ENFORCED
+            LIMIT 10
+        ];
+    }
 }
