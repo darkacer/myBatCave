@@ -24,7 +24,7 @@ public with sharing class getAccountDetails {
     @AuraEnabled(cacheable=true)
     public static List<Contact> getContactList() {
         return [
-            SELECT Id, Name, Email, Picture__c
+            SELECT Id, Name, Email, Picture__c, leadSource
             FROM Contact
             WHERE Picture__c != null
             WITH SECURITY_ENFORCED

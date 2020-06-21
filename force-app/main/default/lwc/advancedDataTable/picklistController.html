@@ -1,0 +1,10 @@
+<template>
+    <template if:true={typeAttributes}>
+        <c-custom-pick-list
+            record-type-id={typeAttributes.picklistRecordTypeId}
+            object-api={typeAttributes.picklistObjectApiName}
+            field-api-name={typeAttributes.picklistFeildApiName}
+            selected-value={value}
+        ></c-custom-pick-list>
+    </template>
+</template>

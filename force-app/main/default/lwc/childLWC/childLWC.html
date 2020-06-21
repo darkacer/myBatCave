@@ -7,8 +7,16 @@
 			data={data}
 			show-row-number-column="false"
 			hide-checkbox-column="false"
-			columns={columns}>
+			columns={columns}
+		>
 		</c-advanced-data-table>
+
+		<c-custom-pick-list
+			record-type-id=''
+			object-api={contact}
+			field-api-name={leadSource}
+			selected-value='Other'
+		></c-custom-pick-list>
 	
 	</template>
 </template>
