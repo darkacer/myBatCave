@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "CodeLens (Launch) - FirstJavaProgram",
+      "request": "launch",
+      "mainClass": "FirstJavaProgram",
+      "projectName": "batCaveProject_d7300500"
+    },
+    {
       "name": "Launch Apex Replay Debugger",
       "type": "apex-replay",
       "request": "launch",

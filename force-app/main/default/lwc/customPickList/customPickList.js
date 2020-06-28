@@ -18,7 +18,6 @@ export default class CustomPickList extends LightningElement {
     @wire(getObjectInfo, { objectApiName: '$objectApi' })
     objectInfo({error, data}) {
         if (data) {
-            console.log('object data is ', data)
             if (this.recordTypeId === '') this.recTypeId = data.defaultRecordTypeId;
         }
     };
@@ -27,13 +26,10 @@ export default class CustomPickList extends LightningElement {
     pickVals({error, data}) {
         if (data) {
             this.options = data.values.map(el => {
-                let retObj = {
-                    value: el.label, isSelected: false
+                return {
+                    isSelected: (this.selectedValue === el.label),
+                    value: el.label
                 }
-                if (this.selectedValue === el.label) {
-                    retObj.isSelected = true;
-                }
-                return retObj
             })
         }
     };
