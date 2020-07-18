@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - peopleInCircle",
+      "request": "launch",
+      "mainClass": "peopleInCircle",
+      "projectName": "batCaveProject_d7300500"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - FirstJavaProgram",
       "request": "launch",
       "mainClass": "FirstJavaProgram",

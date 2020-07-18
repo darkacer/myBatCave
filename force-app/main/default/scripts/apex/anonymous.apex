@@ -18,3 +18,5 @@ public static String getDataType(String objectApi, String fieldName) {
                 .get(fieldName).getDescribe().getType());
 }
 System.debug(getDataType('Contact', 'picture__c'));
+
+System.debug('out ' + UtilityClass.getRecordTypeByDevName('Account'));

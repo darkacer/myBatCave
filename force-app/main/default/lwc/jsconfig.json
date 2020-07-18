@@ -49,6 +49,9 @@
             ],
             "c/customPickList": [
                 "customPickList/customPickList.js"
+            ],
+            "c/bindingHello": [
+                "bindingHello/bindingHello.js"
             ]
         },
         "experimentalDecorators": true
