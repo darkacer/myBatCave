@@ -52,6 +52,9 @@
             ],
             "c/bindingHello": [
                 "bindingHello/bindingHello.js"
+            ],
+            "c/accountFinder": [
+                "accountFinder/accountFinder.js"
             ]
         },
         "experimentalDecorators": true

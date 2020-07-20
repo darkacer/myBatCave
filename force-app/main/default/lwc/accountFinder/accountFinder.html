@@ -1,0 +1,13 @@
+<template>
+    <lightning-input
+        type='number'
+        formatter='currency'
+        value={annualRevenue}
+        label= 'Annual Revenue'
+        onchange={handleChange}
+    ></lightning-input>
+    <lightning-button
+    label='reset'
+    onclick={reset}
+    ></lightning-button>
+</template>
