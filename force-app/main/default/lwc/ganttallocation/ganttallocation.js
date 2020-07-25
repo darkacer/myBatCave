@@ -71,16 +71,21 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
 
     setTasks() {
         this.tasks = []
-        Object.keys(this.project.childDataList).forEach(task => {
+        Object.keys(this.project.taskDataList).forEach(task => {
             let tempTask = {
-                ...this.project.childDataList[task]
+                ...this.project.taskDataList[task]
             }
+            this.calculateLeftAndRight(tempTask)
             tempTask.style = this.calcStyle(tempTask);
             tempTask.labelStyle = this.calcLabelStyle(tempTask);
             tempTask.toolTipContent = this.toolTipContent(tempTask)
             tempTask.class = ["slds-is-absolute", "lwc-allocation"].join(" ");
             this.tasks.push(tempTask);
         })
+    }
+
+    calculateLeftAndRight(temp) {
+        console.log('temp tasl ===', JSON.stringify(temp))
     }
 
     toolTipContent(tempTask) {
@@ -99,7 +104,7 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
         let styles = [
             "left: " + (allocation.left / totalSlots) * 100 + "%",
             "right: " +
-            ((totalSlots - (allocation.right + 1)) / totalSlots) * 100 +
+            ((totalSlots - (allocation.right)) / totalSlots) * 100 +
             "%"
         ];
 
@@ -127,12 +132,12 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
 
         const totalSlots = this.times.length;
         let left = allocation.left / totalSlots < 0 ? 0 : allocation.left / totalSlots;
-        let right = (totalSlots - (allocation.right + 1)) / totalSlots < 0 ?
+        let right = (totalSlots - (allocation.right)) / totalSlots < 0 ?
             0 :
-            (totalSlots - (allocation.right + 1)) / totalSlots;
+            (totalSlots - (allocation.right)) / totalSlots;
         let styles = [
-            "left: calc(" + left * 100 + "% + 15px)",
-            "right: calc(" + right * 100 + "% + 30px)"
+            "left: calc(" + left * 100 + "%)",
+            "right: calc(" + right * 100 + "%)"
         ];
 
         styles.push("transition: none")

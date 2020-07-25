@@ -5,6 +5,9 @@ import momentJS from "@salesforce/resourceUrl/momentJS";
 
 import getChartData from "@salesforce/apex/GanttChartController.getGanttData";
 
+const [MONTH_DAYS_SHIFT, DEfAULT_DAYS_SHIFT] = [31, 7];
+const [DAY_SLOT_SIZE, WEEK_SLOT_SIZE, MONTH_SLOT_SIZE] = [1, 7, 31];
+const [DAY_SLOTS, WEEK_SLOTS, MONTH_SLOTS] = [14, 10, 6]
 export default class Ganttchart extends LightningElement {
     
     @api recordId;
@@ -17,14 +20,19 @@ export default class Ganttchart extends LightningElement {
 	@track formattedEndDate;
 	@track datePickerString;
 	@track dates;
-	@track dateShift = 7;
+	@track dateShift = DEfAULT_DAYS_SHIFT;
 	
 	@track returnedData;
 
 	@track view = {
+		
 		options: [
-			{label: "View by Day", value: "1/14"},
-			{label: "View by Week", value: "7/10"}
+			{label: "View by Day", value: DAY_SLOT_SIZE+'/'+DAY_SLOTS+'/'+DEfAULT_DAYS_SHIFT},
+			{label: "View by Week", value: WEEK_SLOT_SIZE+'/'+WEEK_SLOTS+'/'+DEfAULT_DAYS_SHIFT},
+			{label: "View by Month", value: MONTH_SLOT_SIZE+'/'+MONTH_SLOTS+'/'+MONTH_DAYS_SHIFT},
+			//slot size
+			//# of slot
+			//dateshift 
 		],
 		slotSize: 1,
 		slots: 14
@@ -38,6 +46,13 @@ export default class Ganttchart extends LightningElement {
 		});
 	}
 	
+	firstDateOfWeek(date) {
+		return moment(date).day(1).toDate()
+	}
+
+	firstDateOfMonth(date) {
+		return moment(date).startOf('month').toDate()
+	}
 	
 	setStartDate(_startDate) {
 		if (_startDate instanceof Date) {
@@ -45,9 +60,10 @@ export default class Ganttchart extends LightningElement {
 			
 			this.datePickerString = _startDate.toISOString();
 			
-			this.startDate = moment(_startDate)
-							.day(1)
-							.toDate();
+			this.startDate = (this.view.slotSize !== MONTH_SLOT_SIZE) ?
+				this.firstDateOfWeek(_startDate) :
+				this.firstDateOfMonth(_startDate)
+
 			
 			this.startDateUTC = moment(this.startDate)
 							    .utc()
@@ -59,20 +75,25 @@ export default class Ganttchart extends LightningElement {
 			this.setDateHeaders();
 		}
 	}
+
+	getNextDateInSlot(date) {
+		let nextDate = date.add(this.view.slotSize, "days")
+		return (this.view.slotSize === MONTH_SLOT_SIZE) ? moment(this.firstDateOfMonth(nextDate)) : nextDate
+	}
 	
 	setDateHeaders() {
 		
-		this.endDate = moment(this.startDate)
-						.add(this.view.slots * this.view.slotSize - 1, "days")
-						.toDate();
+		this.endDate = (this.view.slotSize !== MONTH_SLOT_SIZE) ? 
+						moment(this.startDate).add(this.view.slots * this.view.slotSize - 1, "days").toDate() :
+						moment(this.startDate).add(this.view.slots, "month").add(-1, 'days').toDate()
 		this.endDateUTC = moment(this.endDate)
 						.utc()
 						.valueOf() -
 						moment(this.endDate).utcOffset() * 60 * 1000 + "";
 		//this.formattedEndDate = this.endDate.toLocaleString();
 		this.formattedEndDate = moment(this.endDate).format('DD-MMM-YYYY');
-		console.log('formattedStartDate ', this.formattedStartDate)
-		console.log('formattedEndDate ', this.formattedEndDate)
+		//console.log('formattedStartDate ', this.formattedStartDate)
+		//console.log('formattedEndDate ', this.formattedEndDate)
 		
 		
 		
@@ -82,7 +103,9 @@ export default class Ganttchart extends LightningElement {
 
 		let dates = {};
 
-		for (let date = moment(this.startDate); date <= moment(this.endDate); date.add(this.view.slotSize, "days")) {
+		// for (let date = moment(this.startDate); date <= moment(this.endDate); date.add(this.view.slotSize, "days")) {
+		for (let date = moment(this.startDate); date <= moment(this.endDate) ; date = this.getNextDateInSlot(date)) {
+			console.log('***', date)
 			let index = date.format("YYYYMM");
 			if (!dates[index]) {
 				dates[index] = {
@@ -179,17 +202,30 @@ export default class Ganttchart extends LightningElement {
 		this.handleRefresh();
 	}
 
+	getShiftedDate(start, direction){
+		if (this.dateShift !== MONTH_DAYS_SHIFT) {
+			(direction === 'prev') ? 
+				start.setDate(start.getDate() - this.dateShift):
+				start.setDate(start.getDate() + this.dateShift)
+			return start
+		}
+		return (direction === 'prev') ? this.addMonths(start, -1) : this.addMonths(start, 1)
+	}
+
+	addMonths(date, skew) {
+		return moment(date).add(skew, 'months').toDate();
+	}
+
 	navigateToPrevious() {
 		let _startDate = new Date(this.startDate);
-		_startDate.setDate(_startDate.getDate() - this.dateShift);
-
+		_startDate = this.getShiftedDate(_startDate, 'prev');
 		this.setStartDate(_startDate);
 		this.handleRefresh();
 	}
 
 	navigateToNext() {
 		let _startDate = new Date(this.startDate);
-		_startDate.setDate(_startDate.getDate() + this.dateShift);
+		_startDate = this.getShiftedDate(_startDate, 'next');
 
 		this.setStartDate(_startDate);
 		this.handleRefresh();
@@ -205,12 +241,14 @@ export default class Ganttchart extends LightningElement {
 		this.view.value = value;
 		this.view.slotSize = parseInt(values[0], 10);
 		this.view.slots = parseInt(values[1], 10);
+		this.dateShift = parseInt(values[2], 10);
 	}
 
 	handleViewChange(event) {
 		this.setView(event.target.value);
+		this.setStartDate(this.startDate)
 		this.setDateHeaders();
 		this.handleRefresh();
 	}
-	
+
 }

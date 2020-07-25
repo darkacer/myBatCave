@@ -18,7 +18,7 @@ public class GanttChartController {
     
     @auraEnabled
     public static List<ProjectWrapperClass> getGanttData(String recordId, String startDateStr, String endDateStr, Integer slotSize) {
-        Date startDate = DateTime.newInstance(Long.valueOf(startDateStr)).date();
+        Date startDate = DateTime.newInstance(Long.valueOf(startDateStr)).date().addDays(1);
         Date endDate = DateTime.newInstance(Long.valueOf(endDateStr)).date();
         List<ProjectWrapperClass> returnData = new List<ProjectWrapperClass>();
         system.debug(startDate);
@@ -41,11 +41,12 @@ public class GanttChartController {
             taskData.recordTypeName = task.project__r.recordType.name;
             //taskData.projectName = task.
             Decimal left = Decimal.valueOf(startDate.daysBetween(task.Start_Date__c)) / slotSize;
-            taskData.left = left.round(System.RoundingMode.FLOOR);
+            taskData.left = left; //.round(System.RoundingMode.FLOOR);
             
-            Decimal right = Decimal.valueOf(startDate.daysBetween(task.End_Date__c)) / slotSize;
-            taskData.right = right.round(System.RoundingMode.FLOOR);
-            
+            Decimal right = Decimal.valueOf(startDate.daysBetween(task.End_Date__c.addDays(1))) / slotSize;
+            taskData.right = right;//.round(System.RoundingMode.FLOOR);
+            System.debug('left => ' + left);
+            System.debug('right => ' + right);
             if (projectToTasksMap.containsKey(task.project__c)) {
                 projectToTasksMap.get(task.project__c).add(taskData);
             } else {
