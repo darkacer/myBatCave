@@ -26,7 +26,7 @@ public class GanttChartController {
         List<Task__c> taskList = [Select Id, name, start_date__c, end_date__c, project__r.recordType.name, project__c
                                   From Task__c 
                                   Where start_date__c <= :endDate AND End_Date__c >= :startDate
-                                  Order by project__c
+                                  Order by project__c, start_date__c
                                  ];
         Map<Id, List<TaskWrapperClass>> projectToTasksMap = new Map<Id, List<TaskWrapperClass>>();
         
@@ -40,13 +40,13 @@ public class GanttChartController {
             taskData.endDate = task.end_date__c;
             taskData.recordTypeName = task.project__r.recordType.name;
             //taskData.projectName = task.
-            Decimal left = Decimal.valueOf(startDate.daysBetween(task.Start_Date__c)) / slotSize;
-            taskData.left = left; //.round(System.RoundingMode.FLOOR);
+            //Decimal left = Decimal.valueOf(startDate.daysBetween(task.Start_Date__c)) / slotSize;
+            //taskData.left = left; //.round(System.RoundingMode.FLOOR);
             
-            Decimal right = Decimal.valueOf(startDate.daysBetween(task.End_Date__c.addDays(1))) / slotSize;
-            taskData.right = right;//.round(System.RoundingMode.FLOOR);
-            System.debug('left => ' + left);
-            System.debug('right => ' + right);
+            //Decimal right = Decimal.valueOf(startDate.daysBetween(task.End_Date__c.addDays(1))) / slotSize;
+            //taskData.right = right;//.round(System.RoundingMode.FLOOR);
+            //System.debug('left => ' + left);
+            //System.debug('right => ' + right);
             if (projectToTasksMap.containsKey(task.project__c)) {
                 projectToTasksMap.get(task.project__c).add(taskData);
             } else {

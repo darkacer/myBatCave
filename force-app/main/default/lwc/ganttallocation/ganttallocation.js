@@ -21,15 +21,21 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
         this._project = {
             ..._project
         };
+        console.log(this.startDate, '<------------->')
+        console.log(this.endDate, '<------------->')
         this.setTasks();
     }
 
 
     connectedCallback() {
+        console.log(this.startDate, '-------------')
+        console.log(this.endDate, '-------------')
         this.refreshDates(this.startDate, this.endDate, this.dateIncrement);
     }
     @api
     refreshDates(startDate, endDate, dateIncrement) {
+        console.log(this.startDate, '<$$$$>')
+        console.log(this.endDate, '<$$$$>')
         if (startDate && endDate && dateIncrement) {
             let times = [];
             let today = new Date();
@@ -75,7 +81,7 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
             let tempTask = {
                 ...this.project.taskDataList[task]
             }
-            this.calculateLeftAndRight(tempTask)
+            tempTask = this.calculateLeftAndRight(tempTask)
             tempTask.style = this.calcStyle(tempTask);
             tempTask.labelStyle = this.calcLabelStyle(tempTask);
             tempTask.toolTipContent = this.toolTipContent(tempTask)
@@ -85,7 +91,43 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
     }
 
     calculateLeftAndRight(temp) {
-        console.log('temp tasl ===', JSON.stringify(temp))
+        let taskStart = Date.parse(temp.startDate) - 24 * 3600 * 1000
+        let taskEnd = Date.parse(temp.endDate)
+        let startDate = Date.parse(JSON.stringify(new Date(this.startDate)).slice(1,11))
+        if (this.dateIncrement === 31) {
+            temp.left = this.monthCorrector(this.startDate, temp.startDate, 'left')
+            temp.right = this.monthCorrector(this.startDate, temp.endDate, 'right')
+            return temp
+        }
+        temp.left = (taskStart - startDate) / 1000 / 3600 / 24 / this.dateIncrement
+        temp.right = (taskEnd - startDate) / 1000 / 3600 / 24 / this.dateIncrement
+        return temp
+    }
+
+    monthCorrector(dateFrom, dateTo, type) {
+        let numberOfMonths = this.monthDiff(new Date(dateFrom), new Date(dateTo))
+        let myDateTo = new Date(dateTo);
+        let preDate =  (type === 'left') ? -1 / this.getDaysInMonth(myDateTo) : 0
+        let offset = myDateTo.getDate() / this.getDaysInMonth(myDateTo)
+        return numberOfMonths + offset + preDate;
+    }
+
+    addDays(date, days) {
+        date.setDate(date.getDate() + days)
+        return date;
+    }
+
+    getDaysInMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+    }
+    
+    firstDateOfMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+
+    monthDiff(dateFrom, dateTo) {
+        return dateTo.getMonth() - dateFrom.getMonth() + 
+          (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
     }
 
     toolTipContent(tempTask) {
