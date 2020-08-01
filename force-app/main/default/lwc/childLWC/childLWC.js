@@ -3,8 +3,8 @@ import getContactList from '@salesforce/apex/getAccountDetails.getContactList';
 import LEAD_SOURCE from '@salesforce/schema/Contact.LeadSource';
 import CONTACT_OBJECT from '@salesforce/schema/Contact';
 
-const COUNTRY = 'country'
-const STATE = 'state'
+const DEPENDEE = 'country'
+const DEPENDENT = 'state'
 
 export default class ChildLWC extends LightningElement {
 	@api name;
@@ -25,20 +25,20 @@ export default class ChildLWC extends LightningElement {
 		{ label: 'Name', fieldName: 'Name',type:'text'},
 		{ label: 'Profile Pic', fieldName: 'Picture__c', type:'image'},
 		{ label: 'Email', fieldName: 'Email', type:'text' },
-		{ label: 'My Country', fieldName: 'country', type: 'normalpicklist',
+		{ label: 'My Country', fieldName: DEPENDEE, type: 'normalpicklist',
 			typeAttributes: {
 				picklistOptions: this.objValuePair(Object.keys(data_picklist)),
-				value: {fieldName: 'country'},
+				value: {fieldName: DEPENDEE},
 				index: {fieldName: 'index'},
-				fieldApiName: 'country'
+				fieldApiName: DEPENDEE
 			}
 		},
-		{ label: 'My State', fieldName: 'state', type: 'normalpicklist',
+		{ label: 'My State', fieldName: DEPENDENT, type: 'normalpicklist',
 			typeAttributes: {
 				picklistOptions: {fieldName: 'dependentValues'},
-				value: {fieldName: 'state'},
+				value: {fieldName: DEPENDENT},
 				index: {fieldName: 'index'},
-				fieldApiName: 'state'
+				fieldApiName: DEPENDENT
 			}
 		},
 	];
@@ -56,7 +56,7 @@ export default class ChildLWC extends LightningElement {
 			)
 
 			this.data = this.data.map( item => {
-				return Object.assign(item, {dependentValues: this.objValuePair(data_picklist[item['country']])})
+				return Object.assign(item, {dependentValues: this.objValuePair(data_picklist[item[DEPENDEE]])})
 			})
 		} else {
 			console.log('error', error)
@@ -65,14 +65,14 @@ export default class ChildLWC extends LightningElement {
  
 	pickliListChanged(event) {
 		event.stopPropagation();
-		if (event.detail.fieldApiname === 'country') {
-
-			this.data[event.detail.index]['country'] = event.detail.value
+		if (event.detail.fieldApiname === DEPENDEE) {
+			this.data[event.detail.index].DEPENDEE = event.detail.value
 			this.data[event.detail.index].dependentValues = this.objValuePair(data_picklist[event.detail.value])
-			this.data[event.detail.index]['state'] = data_picklist[event.detail.value][0]
-
-			this.data = [...this.data]
+			this.data[event.detail.index].DEPENDENT = data_picklist[event.detail.value][0]
+		} else {
+			this.data[event.detail.index].DEPENDENT = event.detail.value
 		}
+		this.data = [...this.data]
 	}
 }
 
