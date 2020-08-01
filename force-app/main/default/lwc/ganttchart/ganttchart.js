@@ -1,8 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import { loadScript } from "lightning/platformResourceLoader";
-
 import momentJS from "@salesforce/resourceUrl/momentJS";
-
 import getChartData from "@salesforce/apex/GanttChartController.getGanttData";
 
 const [DEFAULT_DAYS_SHIFT, MONTH_DAYS_SHIFT] = [7, 31];
@@ -11,7 +9,7 @@ const [DAY_SLOTS, WEEK_SLOTS, MONTH_SLOTS] = [14, 10, 6]
 export default class Ganttchart extends LightningElement {
     
     @api recordId;
-    @api defaultView;
+    //@api defaultView;
     @api methodName = 'getGanttDataMileStone';
 
     @track projects=[];
@@ -23,7 +21,6 @@ export default class Ganttchart extends LightningElement {
 	@track dateShift = DEFAULT_DAYS_SHIFT;
 
 	@track view = {
-		
 		options: [
 			{label: "View by Day", value: DAY_SLOT_SIZE+'/'+DAY_SLOTS+'/'+DEFAULT_DAYS_SHIFT},
 			{label: "View by Week", value: WEEK_SLOT_SIZE+'/'+WEEK_SLOTS+'/'+DEFAULT_DAYS_SHIFT},
@@ -62,7 +59,6 @@ export default class Ganttchart extends LightningElement {
 				this.firstDateOfWeek(_startDate) :
 				this.firstDateOfMonth(_startDate)
 
-			
 			this.startDateUTC = moment(this.startDate)
 							    .utc()
 								.valueOf() - moment(this.startDate)
@@ -74,7 +70,9 @@ export default class Ganttchart extends LightningElement {
 
 	getNextDateInSlot(date) {
 		let nextDate = date.add(this.view.slotSize, "days")
-		return (this.view.slotSize === MONTH_SLOT_SIZE) ? moment(this.firstDateOfMonth(nextDate)) : nextDate
+		return (this.view.slotSize === MONTH_SLOT_SIZE) ? 
+			moment(this.firstDateOfMonth(nextDate)) : 
+			nextDate
 	}
 	
 	setDateHeaders() {
@@ -95,7 +93,9 @@ export default class Ganttchart extends LightningElement {
 
 		let dates = {};
 
-		for (let date = moment(this.startDate); date <= moment(this.endDate) ; date = this.getNextDateInSlot(date)) {
+		for (
+			let date = moment(this.startDate); date <= moment(this.endDate); date = this.getNextDateInSlot(date)
+		) {
 			let index = date.format("YYYYMM");
 			if (!dates[index]) {
 				dates[index] = {

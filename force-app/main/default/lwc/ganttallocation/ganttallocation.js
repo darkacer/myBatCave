@@ -1,7 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 
-const dateOption = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+// const dateOption = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+const MONTH_SLOT_SIZE = 31;
 
 export default class Ganttallocation extends NavigationMixin(LightningElement) {
     @api _project;
@@ -91,14 +92,15 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
     }
 
     calculateLeftAndRight(temp) {
-        let taskStart = Date.parse(temp.startDate) - 24 * 3600 * 1000
-        let taskEnd = Date.parse(temp.endDate)
-        let startDate = Date.parse(JSON.stringify(new Date(this.startDate)).slice(1,11))
-        if (this.dateIncrement === 31) {
+        if (this.dateIncrement === MONTH_SLOT_SIZE) {
             temp.left = this.monthCorrector(this.startDate, temp.startDate, 'left')
             temp.right = this.monthCorrector(this.startDate, temp.endDate, 'right')
             return temp
         }
+        let taskStart = Date.parse(temp.startDate) - 24 * 3600 * 1000
+        let taskEnd = Date.parse(temp.endDate)
+        let startDate = Date.parse(JSON.stringify(new Date(this.startDate)).slice(1,11))
+        
         temp.left = (taskStart - startDate) / 1000 / 3600 / 24 / this.dateIncrement
         temp.right = (taskEnd - startDate) / 1000 / 3600 / 24 / this.dateIncrement
         return temp

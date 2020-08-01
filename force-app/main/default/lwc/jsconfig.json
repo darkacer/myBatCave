@@ -55,6 +55,9 @@
             ],
             "c/accountFinder": [
                 "accountFinder/accountFinder.js"
+            ],
+            "c/normalPicklist": [
+                "normalPicklist/normalPicklist.js"
             ]
         },
         "experimentalDecorators": true

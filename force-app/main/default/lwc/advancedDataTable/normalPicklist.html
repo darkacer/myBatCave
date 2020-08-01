@@ -1,0 +1,11 @@
+<template>
+    <template if:true={typeAttributes}>
+        <c-normal-picklist
+            picklist-options={typeAttributes.picklistOptions}
+            label={typeAttributes.label}
+            index={typeAttributes.index}
+            value={typeAttributes.value}
+            field-api-name={typeAttributes.fieldApiName}
+        ></c-normal-picklist>
+    </template>
+</template>

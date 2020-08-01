@@ -1,15 +1,17 @@
 <template>
 	hi mark {name}
 	<template if:true={data.length}>
-
+		
 		<c-advanced-data-table
 			key-field="id"
 			data={data}
 			show-row-number-column="false"
 			hide-checkbox-column="false"
 			columns={columns}
-		>
-		</c-advanced-data-table>
+			onpicklistchanged={pickliListChanged}
+		></c-advanced-data-table>
+		
+		
 
 		<c-custom-pick-list
 			record-type-id=''
