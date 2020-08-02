@@ -5,8 +5,17 @@
             "c/accordianTemplate": [
                 "accordianTemplate/accordianTemplate.js"
             ],
+            "c/accountFinder": [
+                "accountFinder/accountFinder.js"
+            ],
+            "c/advancedDataTable": [
+                "advancedDataTable/advancedDataTable.js"
+            ],
             "c/baseComponent": [
                 "baseComponent/baseComponent.js"
+            ],
+            "c/bindingHello": [
+                "bindingHello/bindingHello.js"
             ],
             "c/childDisplay": [
                 "childDisplay/childDisplay.js"
@@ -17,8 +26,17 @@
             "c/childcomponent": [
                 "childcomponent/childcomponent.js"
             ],
+            "c/customDataTable": [
+                "customDataTable/customDataTable.js"
+            ],
+            "c/customPickList": [
+                "customPickList/customPickList.js"
+            ],
             "c/demoComponent": [
                 "demoComponent/demoComponent.js"
+            ],
+            "c/demoDataTable": [
+                "demoDataTable/demoDataTable.js"
             ],
             "c/eventSimple": [
                 "eventSimple/eventSimple.js"
@@ -29,8 +47,14 @@
             "c/ganttallocation": [
                 "ganttallocation/ganttallocation.js"
             ],
+            "c/ganttchart": [
+                "ganttchart/ganttchart.js"
+            ],
             "c/helloWorld": [
                 "helloWorld/helloWorld.js"
+            ],
+            "c/normalPicklist": [
+                "normalPicklist/normalPicklist.js"
             ],
             "c/showContacts": [
                 "showContacts/showContacts.js"
@@ -40,24 +64,6 @@
             ],
             "c/wireapi": [
                 "wireapi/wireapi.js"
-            ],
-            "c/ganttchart": [
-                "ganttchart/ganttchart.js"
-            ],
-            "c/advancedDataTable": [
-                "advancedDataTable/advancedDataTable.js"
-            ],
-            "c/customPickList": [
-                "customPickList/customPickList.js"
-            ],
-            "c/bindingHello": [
-                "bindingHello/bindingHello.js"
-            ],
-            "c/accountFinder": [
-                "accountFinder/accountFinder.js"
-            ],
-            "c/normalPicklist": [
-                "normalPicklist/normalPicklist.js"
             ]
         },
         "experimentalDecorators": true
