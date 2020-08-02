@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-import { generateObjValPair, addDependentValues } from 'c/advancedDataTable'
+import { generateObjValPair, addDependentValues } from 'c/customDataTable'
 
 const countryToState = {
     'c1': ['s11','s12','s13','s14'],
