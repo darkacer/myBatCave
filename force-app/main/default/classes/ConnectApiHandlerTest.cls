@@ -84,5 +84,6 @@ public with sharing class ConnectApiHandlerTest {
         ConnectApi.FeedItemInput feedItemInput2 = ConnectApiHandler.createFeedItemInputFromBody(feedElement.body);
         System.assertEquals(input, feedItemInput2.body, 'createFeedItemInputFromBody is returning a different input body than createInputFromBody.');
         
+        ConnectApiHandler.addHtmlTagAround(input, ConnectApi.MarkupType.Bold, 'innerText');
     }
 }

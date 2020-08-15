@@ -1,7 +1,4 @@
 public with sharing class ConnectApiHandler {
-    public ConnectApiHandler() {
-
-    }
 
     public static ConnectApi.FeedItemInput createFeedItemInputFromBody(ConnectApi.FeedBody body) {
         ConnectApi.MessageBodyInput bodyInput = createInputFromBody(body);
