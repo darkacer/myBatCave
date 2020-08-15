@@ -71,6 +71,8 @@ public with sharing class ConnectApiHandler {
                 ConnectApi.MarkupBeginSegment markupBeginOutput = (ConnectApi.MarkupBeginSegment) segment;
                 ConnectApi.MarkupBeginSegmentInput markupBeginInput = new ConnectApi.MarkupBeginSegmentInput();
                 markupBeginInput.markupType = markupBeginOutput.markupType;
+                markupBeginInput.url = markupBeginOutput.url;
+                markupBeginInput.altText = markupBeginOutput.altText;
                 input.messageSegments.add(markupBeginInput);
             }
             else if (segment instanceof ConnectApi.MarkupEndSegment) {

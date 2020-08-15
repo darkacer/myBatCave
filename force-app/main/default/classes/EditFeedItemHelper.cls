@@ -19,10 +19,12 @@ public class EditFeedItemHelper {
                 
                 if (theResult instanceof ConnectApi.FeedItem) {
                     ConnectApi.FeedItem item = (ConnectApi.FeedItem) theResult;
+                    System.debug('initial body => ' + item.body);
                     ConnectApi.FeedItemInput input = ConnectApiHandler.createFeedItemInputFromBody(item.body);
                     if (modifyObject != null) modifyObject.modifyInput(input, item.Id);
+                    System.debug('input => ' + input);
                     ConnectApi.ChatterFeeds.updateFeedElement(communityId, item.id, input);
-                }   
+                } 
             }
             else {
                 System.debug('Failure in batch feed element retrieval: ' + result.getErrorMessage());
@@ -37,6 +39,7 @@ public class EditFeedItemHelper {
     public class ModifyAccount implements ModifyInterface{
         Map<Id,Account> idToRecordMap;
 
+        // constructor for preset id to rec map for account names
         public ModifyAccount(Map<Id,Account> idToRecordMap) {
             this.idToRecordMap = idToRecordMap;
         }
