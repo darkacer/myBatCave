@@ -11,6 +11,33 @@ public with sharing class ConnectApiHandler {
         return input;
     }
 
+    public static void addHtmlTagAround(ConnectApi.MessageBodyInput messageInput, ConnectApi.MarkupType tagName, String innerText) {
+        addstartHtmlTag(messageInput, tagName);
+        addText(messageInput, innerText);
+        addEndHtmlTag(messageInput, tagName);
+    }
+    
+    public static void addText(ConnectApi.MessageBodyInput messageInput, String innerText) {
+        ConnectApi.TextSegmentInput textSegment;
+        textSegment = new ConnectApi.TextSegmentInput();
+        textSegment.text = innerText;
+        messageInput.messageSegments.add(textSegment);
+    }
+    
+    public static void addStartHtmlTag(ConnectApi.MessageBodyInput messageInput, ConnectApi.MarkupType tagName) {
+        ConnectApi.MarkupBeginSegmentInput markupBeginSegment;
+        markupBeginSegment = new ConnectApi.MarkupBeginSegmentInput();
+        markupBeginSegment.markupType = tagName;
+        messageInput.messageSegments.add(markupBeginSegment);
+    }
+
+    public static void addEndHtmlTag(ConnectApi.MessageBodyInput messageInput, ConnectApi.MarkupType tagName) {
+        ConnectApi.MarkupEndSegmentInput markupEndSegment;
+        markupEndSegment = new ConnectApi.MarkupEndSegmentInput();
+        markupEndSegment.markupType = tagName;
+        messageInput.messageSegments.add(markupEndSegment);
+    }
+
     public static ConnectApi.MessageBodyInput createInputFromBody(ConnectApi.FeedBody body) {
         ConnectApi.MessageBodyInput input = new ConnectApi.MessageBodyInput();
         input.messageSegments = new List<ConnectApi.MessageSegmentInput>();
@@ -62,10 +89,7 @@ public with sharing class ConnectApiHandler {
             else {
                 // The other segment types are system-generated and have no corresponding input types.
             }
-            
         }
         return input;
     }
 }
-
-
