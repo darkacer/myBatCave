@@ -1,0 +1,21 @@
+<template>
+    Drag items here!!
+
+    <div class="dropcls" dropzone="link">
+        <lightning-formatted-text 
+            value="|--Drop the dragged product here --|" > 
+        </lightning-formatted-text></p>                         
+    </div>      
+    <template if:true={products}>
+        <template for:each={products} for:item="prod">
+            <div key={prod.id} draggable="true" data-id={prod.Id} ondragstart={handleDragStart}>
+                <lightning-card key={prod.id} title={prod.Name}>
+                    <lightning-button label="Remove" slot="actions"></lightning-button>
+                    <div key={prod.id}>
+                        {prod.ProductCode}
+                    </div>
+                </lightning-card>
+            </div>
+        </template>
+    </template>
+</template>

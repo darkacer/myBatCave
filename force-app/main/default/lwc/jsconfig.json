@@ -64,6 +64,12 @@
             ],
             "c/wireapi": [
                 "wireapi/wireapi.js"
+            ],
+            "c/shoppingList": [
+                "shoppingList/shoppingList.js"
+            ],
+            "c/shoppingCart": [
+                "shoppingCart/shoppingCart.js"
             ]
         },
         "experimentalDecorators": true
