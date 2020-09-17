@@ -2,7 +2,7 @@ import { LightningElement, track} from 'lwc';
 
 export default class EmpApiPath extends LightningElement {
     @track myOptions = [
-        'option1','option2','option3','option4',
+        'Draft','Submitted To Customers','Ordered By Customers','Shipped',
     ]
     @track defaultOption = 'option3'
     handleSelect(event) {

@@ -1,21 +1,35 @@
 <template>
-    Drag items here!!
-
     <div class="dropcls" dropzone="link">
+        <lightning-card title="My Cart">
+            <template if:true={products}>
+                <template for:each={products} for:item="prod">
+                    <div key={prod.id} class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                        <lightning-layout>
+                            <lightning-layout-item padding="around-small">
+                                <div class="slds-box ">{prod.Name} </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="slds-box">{prod.ProductCode}</div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="slds-box">
+                                    Quantity
+                                    <lightning-input type="number" value={prod.quantity}></lightning-input>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="slds-box">
+                                    Price: {prod.price}
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </template>
+            </template>
+            <p slot="footer" style="text-align:left;">Cart Total: {cartTotal}</p>
+        </lightning-card>
         <lightning-formatted-text 
             value="|--Drop the dragged product here --|" > 
         </lightning-formatted-text></p>                         
-    </div>      
-    <template if:true={products}>
-        <template for:each={products} for:item="prod">
-            <div key={prod.id} draggable="true" data-id={prod.Id} ondragstart={handleDragStart}>
-                <lightning-card key={prod.id} title={prod.Name}>
-                    <lightning-button label="Remove" slot="actions"></lightning-button>
-                    <div key={prod.id}>
-                        {prod.ProductCode}
-                    </div>
-                </lightning-card>
-            </div>
-        </template>
-    </template>
+    </div>
 </template>

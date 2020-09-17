@@ -10,6 +10,11 @@ export default class Basepath extends LightningElement {
     @track listOptions = [];
 
     connectedCallback() {
+        this.makeClassList()
+    }
+
+    makeClassList() {
+        this.listOptions = []
         let count = 0
         let isequal = false;
         let foundActive = false;
@@ -19,9 +24,6 @@ export default class Basepath extends LightningElement {
             isequal = isEqual(el, this.selectedOption)
             myclass += (isequal) ? ' slds-is-current slds-is-active' : 
                         (foundActive) ? ' slds-is-incomplete': ' slds-is-complete'
-
-            // myclass += (foundActive) ? ' slds-is-incomplete' : ''
-            // myclass += (!isequal && !foundActive) ? 'slds-is-complete' : ''
             this.listOptions.push(Object.assign(
                 {},
                 {id: count++}, 
@@ -31,38 +33,33 @@ export default class Basepath extends LightningElement {
             ))
             if (isequal) foundActive = true
         })
-
-        console.log('this.listOptions ', JSON.stringify(this.listOptions))
     }
-
     handleSelect(event) {
         let id = event.currentTarget.dataset.id
-        console.log('id is', id)
         this.listOptions.forEach(el => {
-            console.log('checking for ', el.id)
             if (el.selected) {
                 el.class = 'slds-path__item slds-is-current'
                 el.selected = false
-            }
-            if(el.id == id) {
-                el.class = 'slds-path__item slds-is-active'
-                el.selected = true
-                this.selectedOption = el.value
-            } else if( el.id < id) {
-                el.selected = false
-                el.class = 'slds-path__item slds-is-complete'
             } else {
-                el.selected = false
-                el.class = 'slds-path__item slds-is-incomplete'
+                if(el.id == id) {
+                    el.class = 'slds-path__item slds-is-active'
+                    el.selected = true
+                    this.selectedOption = el.value
+                } else if( el.id < id) {
+                    el.selected = false
+                    el.class = 'slds-path__item slds-is-complete'
+                } else {
+                    el.selected = false
+                    el.class = 'slds-path__item slds-is-incomplete'
+                }
             }
         })
-        console.log('after update ', JSON.stringify(this.listOptions))
-
     }
 
     handleUpdate() {
-        this.dispatchEvent(new CustomEvent('select'),{
+        this.makeClassList();
+        this.dispatchEvent(new CustomEvent('select',{
             detail: this.selectedOption
-        });
+        }));
     }
 }

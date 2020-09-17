@@ -4,6 +4,7 @@ import getProuctById from '@salesforce/apex/ShoppingCart.getProuctById';
 
 import SAMPLEMC from "@salesforce/messageChannel/shoppingMessageChannel__c";
 
+
 export default class ShoppingCart extends LightningElement {
     subscription;
 
@@ -59,12 +60,32 @@ export default class ShoppingCart extends LightningElement {
         this.rxId = JSON.parse(this.receivedMessage)['recordId'];
     }
 
+get cartTotal() {
+    if (this.products.length){
+        let ret = 0;
+        this.products.forEach(el => {
+            ret += parseInt(el.price) * parseInt(el.quantity)
+        })
+        return ret
+    }
+    else return 0
+}
+
     getProductDetials() {
         console.log('rxid is ', this.rxId)
         getProuctById({Id: this.rxId})
         .then(result => {
             console.log('data recieved is ', result)
-            this.products.push(result);
+            if(result.PricebookEntries.length)
+                this.products.push(
+                    Object.assign(
+                        {}, 
+                        result, 
+                        {quantity: 10}, 
+                        {price: result.PricebookEntries[0].UnitPrice}
+                    )
+                );
+            console.log('proucts =>', this.products)
         })
     }
 }
