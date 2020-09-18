@@ -62,12 +62,17 @@ export default class ShoppingCart extends LightningElement {
     handleMessage(message) {
         this.receivedMessage = message ? JSON.stringify(message, null, '\t') : 'no message payload';
         console.log('rx msg ', this.receivedMessage)
-        this.rxId = JSON.parse(this.receivedMessage)['recordId'];
+        if (JSON.parse(this.receivedMessage)['type'] === 'addNewProduct')
+            this.rxId = JSON.parse(this.receivedMessage)['recordId'];
+        else if (JSON.parse(this.receivedMessage)['type'] === 'submitProducts') {
+            this.makeCallout()
+        }
     }
-    @track cartValue;
-    set cartTotal(value) {
 
+    makeCallout() {
+        console.log('inside make callout')
     }
+
     get cartTotal() {
         if (this.products.length){
             let ret = 0;
@@ -85,7 +90,7 @@ export default class ShoppingCart extends LightningElement {
         getProuctById({Id: this.rxId})
         .then(result => {
             console.log('data recieved is ', result)
-            if(result.PricebookEntries.length)
+            if(result.PricebookEntries.length) {
                 for(let i = 0; i < this.products.length; i++) {
                     if (this.products[i].Id === result.Id) {
                         this.products[i].quantity += 10
@@ -104,6 +109,7 @@ export default class ShoppingCart extends LightningElement {
                         )
                     );
                 }
+            }
         })
     }
 

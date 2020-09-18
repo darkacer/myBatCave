@@ -28,11 +28,9 @@ export default class ShoppingList extends LightningElement {
 
     handleDragStart(event) {
         event.dataTransfer.dropEffect = 'copy'
-
-        let productId = event.target.dataset.id
-
         const message = {
-            recordId: productId
+            type: 'addNewProduct',
+            recordId: event.target.dataset.id
         };
         publish(this.messageContext, SAMPLEMC, message);
     }
