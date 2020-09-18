@@ -1,7 +1,9 @@
 <template>
-    <c-basepath
-        given-options={myOptions}
-        selected-option={defaultOption}
-        onselect={handleSelect}
-    ></c-basepath>
+    <template if:true={status}>
+        <c-basepath
+            given-options={myOptions}
+            selected-option={status}
+            onselect={handleSelect}
+        ></c-basepath>
+    </template>
 </template>

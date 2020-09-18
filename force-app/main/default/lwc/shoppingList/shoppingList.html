@@ -1,11 +1,10 @@
 <template>
-    hi
     <template if:true={products}>
         <template for:each={products} for:item="prod">
-            <div key={prod.id} draggable="true" data-id={prod.Id} ondragstart={handleDragStart}>
+            <div key={prod.id} draggable="true" data-id={prod.Id} ondragstart={handleDragStart} style="cursor:grab;">
                 <lightning-card key={prod.id} title={prod.Name}>
-                    <lightning-button label="New" slot="actions"></lightning-button>
                     <div key={prod.id}>
+                        <lightning-icon icon-name="utility:drag_and_drop" alternative-text="Drag" title="Drag"></lightning-icon>
                         {prod.ProductCode}
                     </div>
                 </lightning-card>

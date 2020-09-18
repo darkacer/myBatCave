@@ -1,0 +1,14 @@
+.dropcls {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+}
+
+.dropcls.over {
+    border: 5px dotted green;
+}
+
+.flex-container{
+    display: flex;
+}

@@ -6,27 +6,32 @@
                     <div key={prod.id} class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
                         <lightning-layout>
                             <lightning-layout-item padding="around-small">
-                                <div class="slds-box ">{prod.Name} </div>
+                                <div class="slds-box ">
+                                    Product Name
+                                    <div>{prod.Name}</div>
+                                </div>
                             </lightning-layout-item>
                             <lightning-layout-item padding="around-small">
-                                <div class="slds-box">{prod.ProductCode}</div>
-                            </lightning-layout-item>
-                            <lightning-layout-item padding="around-small">
-                                <div class="slds-box">
-                                    Quantity
-                                    <lightning-input type="number" value={prod.quantity}></lightning-input>
+                                <div class="slds-box ">
+                                    Product Code
+                                    <div>{prod.ProductCode}</div>
                                 </div>
                             </lightning-layout-item>
                             <lightning-layout-item padding="around-small">
                                 <div class="slds-box">
-                                    Price: {prod.price}
+                                    <lightning-input label="Quantity" type="number" data-id={prod.Id} value={prod.quantity} onchange={calcCart}></lightning-input>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="slds-box">
+                                    Price: ${prod.price}
                                 </div>
                             </lightning-layout-item>
                         </lightning-layout>
                     </div>
                 </template>
             </template>
-            <p slot="footer" style="text-align:left;">Cart Total: {cartTotal}</p>
+            <p slot="footer" style="text-align:left; color: green; font-size: 20px;"><b>Cart Total: ${cartTotal}</b></p>
         </lightning-card>
         <lightning-formatted-text 
             value="|--Drop the dragged product here --|" > 

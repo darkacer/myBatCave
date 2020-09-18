@@ -30,6 +30,7 @@ export default class ShoppingCart extends LightningElement {
     addEventListers() {
         this.template.addEventListener('dragover', this.handleDragOver.bind(this));
         this.template.addEventListener('drop', this.handleDrop.bind(this));   
+        this.template.addEventListener('dragleave', this.handleDragLeave.bind(this));   
     }
 
     disconnectedCallback() {
@@ -38,20 +39,24 @@ export default class ShoppingCart extends LightningElement {
         this.subscription = null;
     }
 
+    handleDragLeave(event) {
+        this.template.querySelector('.dropcls').className='dropcls';
+    }
+
     handleDrop(event) {
         console.log('inside handle drop');
         if(event.stopPropagation){
             event.stopPropagation();
         }
         event.preventDefault();
-
+        this.template.querySelector('.dropcls').className='dropcls';
         this.getProductDetials();
     }
 
     handleDragOver(event){
-        console.log('inside dragover')
         event.dataTransfer.dropEffect = 'move';
-        event.preventDefault();       
+        event.preventDefault();
+        this.template.querySelector('.dropcls').className='dropcls over';
     }  
 
     handleMessage(message) {
@@ -59,33 +64,54 @@ export default class ShoppingCart extends LightningElement {
         console.log('rx msg ', this.receivedMessage)
         this.rxId = JSON.parse(this.receivedMessage)['recordId'];
     }
+    @track cartValue;
+    set cartTotal(value) {
 
-get cartTotal() {
-    if (this.products.length){
-        let ret = 0;
-        this.products.forEach(el => {
-            ret += parseInt(el.price) * parseInt(el.quantity)
-        })
-        return ret
     }
-    else return 0
-}
+    get cartTotal() {
+        if (this.products.length){
+            let ret = 0;
+            this.products.forEach(el => {
+                ret += parseInt(el.price) * parseInt(el.quantity)
+            })
+            return ret
+        }
+        else return 0
+    }
 
     getProductDetials() {
         console.log('rxid is ', this.rxId)
+        let found = false;
         getProuctById({Id: this.rxId})
         .then(result => {
             console.log('data recieved is ', result)
             if(result.PricebookEntries.length)
-                this.products.push(
-                    Object.assign(
-                        {}, 
-                        result, 
-                        {quantity: 10}, 
-                        {price: result.PricebookEntries[0].UnitPrice}
-                    )
-                );
-            console.log('proucts =>', this.products)
+                for(let i = 0; i < this.products.length; i++) {
+                    if (this.products[i].Id === result.Id) {
+                        this.products[i].quantity += 10
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    this.products.push(
+                        Object.assign(
+                            {}, 
+                            result, 
+                            {quantity: 10}, 
+                            {price: result.PricebookEntries[0].UnitPrice}
+                        )
+                    );
+                }
+        })
+    }
+
+    calcCart(event) {
+        let id = event.currentTarget.dataset.id;
+        let quant = (event.target.value != null) ? event.target.value : 0;
+        this.products.forEach(el => {
+            if(el.Id === id) el.quantity = quant;
         })
     }
 }
