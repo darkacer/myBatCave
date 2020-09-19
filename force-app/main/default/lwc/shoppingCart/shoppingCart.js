@@ -1,7 +1,6 @@
 import { LightningElement, wire, track } from 'lwc';
 import { MessageContext, releaseMessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import getProuctById from '@salesforce/apex/ShoppingCart.getProuctById';
-
 import SAMPLEMC from "@salesforce/messageChannel/shoppingMessageChannel__c";
 
 
@@ -27,6 +26,10 @@ export default class ShoppingCart extends LightningElement {
         this.addEventListers()
     }
 
+    clearCart() {
+        this.products = []
+    }
+
     addEventListers() {
         this.template.addEventListener('dragover', this.handleDragOver.bind(this));
         this.template.addEventListener('drop', this.handleDrop.bind(this));   
@@ -44,7 +47,6 @@ export default class ShoppingCart extends LightningElement {
     }
 
     handleDrop(event) {
-        console.log('inside handle drop');
         if(event.stopPropagation){
             event.stopPropagation();
         }
@@ -61,7 +63,6 @@ export default class ShoppingCart extends LightningElement {
 
     handleMessage(message) {
         this.receivedMessage = message ? JSON.stringify(message, null, '\t') : 'no message payload';
-        console.log('rx msg ', this.receivedMessage)
         if (JSON.parse(this.receivedMessage)['type'] === 'addNewProduct')
             this.rxId = JSON.parse(this.receivedMessage)['recordId'];
         else if (JSON.parse(this.receivedMessage)['type'] === 'submitProducts') {
@@ -73,23 +74,15 @@ export default class ShoppingCart extends LightningElement {
         console.log('inside make callout')
     }
 
+
     get cartTotal() {
-        if (this.products.length){
-            let ret = 0;
-            this.products.forEach(el => {
-                ret += parseInt(el.price) * parseInt(el.quantity)
-            })
-            return ret
-        }
-        else return 0
+        return this.products.length ? this.products.reduce((a, e) => a + e.price * e.quantity, 0) : 0
     }
 
     getProductDetials() {
-        console.log('rxid is ', this.rxId)
         let found = false;
         getProuctById({Id: this.rxId})
         .then(result => {
-            console.log('data recieved is ', result)
             if(result.PricebookEntries.length) {
                 for(let i = 0; i < this.products.length; i++) {
                     if (this.products[i].Id === result.Id) {
@@ -99,7 +92,7 @@ export default class ShoppingCart extends LightningElement {
                     }
                 }
 
-                if (!found) {
+                if(!found) {
                     this.products.push(
                         Object.assign(
                             {}, 

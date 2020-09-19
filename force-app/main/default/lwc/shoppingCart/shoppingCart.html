@@ -1,7 +1,8 @@
 <template>
     <div class="dropcls" dropzone="link">
-        <lightning-card title="My Cart">
+        <lightning-card title="My Bundle">
             <template if:true={products}>
+                <lightning-button label="Clear Bundle" onclick={clearCart} slot="actions" variant="destructive"></lightning-button>
                 <template for:each={products} for:item="prod">
                     <div key={prod.id} class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
                         <lightning-layout>
@@ -31,7 +32,15 @@
                     </div>
                 </template>
             </template>
-            <p slot="footer" style="text-align:left; color: green; font-size: 20px;"><b>Cart Total: ${cartTotal}</b></p>
+            <p slot="footer" style="text-align:left; color: green; font-size: 20px;"><b>
+                Bundle Total
+                <span style="margin-left: 1%;">
+                    <lightning-formatted-number 
+                        value={cartTotal} format-style="currency" minimum-fraction-digits="0"
+                        currency-code="USD" currency-display-as="symbol"
+                    ></lightning-formatted-number>
+                </span>
+            </b></p>
         </lightning-card>
         <lightning-formatted-text 
             value="|--Drop the dragged product here --|" > 

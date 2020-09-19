@@ -99,9 +99,9 @@ function busrtMode() {
     (function frame() {
         confetti({
             particleCount: 7,
-            startVelocity: 25,
+            startVelocity: 60,
             angle: 335,
-            spread: 10,
+            spread: 20,
             origin: {
                 x: 0,
                 y: 0,
@@ -110,9 +110,9 @@ function busrtMode() {
         }); 
         confetti({
             particleCount: 7,
-            startVelocity: 25,
+            startVelocity: 60,
             angle: 205,
-            spread: 10,
+            spread: 20,
             origin: {
                 x: 1,
                 y: 0,
@@ -121,8 +121,8 @@ function busrtMode() {
         });
         
         confetti({
-            particleCount: 7,
-            startVelocity: 35,
+            particleCount: 10,
+            startVelocity: 60,
             angle: 140,
             spread: 30,
             origin: {
@@ -133,8 +133,8 @@ function busrtMode() {
         });
         
         confetti({
-            particleCount: 7,
-            startVelocity: 35,
+            particleCount: 10,
+            startVelocity: 60,
             angle: 40,
             spread: 30,
             origin: {

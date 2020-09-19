@@ -11,11 +11,14 @@ export default class Basepath extends LightningElement {
     @track listOptions = [];
 
     connectedCallback() {
-        this.makeClassList()
+        this.makeClassList(this.selectedOption, false)
         confetti.loadConfetti(this);
     }
 
-    makeClassList() {
+    @api
+    makeClassList(val, makeConfetti) {
+        console.log('indide makeclasslis', val)
+        this.selectedOption = val
         this.listOptions = []
         let count = 0
         let isequal = false;
@@ -23,7 +26,7 @@ export default class Basepath extends LightningElement {
         let myclass;
         this.givenOptions.forEach(el => {
             myclass = 'slds-path__item';
-            isequal = isEqual(el, this.selectedOption)
+            isequal = isEqual(el, val)
             myclass += (isequal) ? ' slds-is-current slds-is-active' : 
                         (foundActive) ? ' slds-is-incomplete': ' slds-is-complete'
             this.listOptions.push(Object.assign(
@@ -35,6 +38,7 @@ export default class Basepath extends LightningElement {
             ))
             if (isequal) foundActive = true
         })
+        if(makeConfetti) this.makeConfetti()
     }
     handleSelect(event) {
         let id = event.currentTarget.dataset.id
@@ -59,12 +63,16 @@ export default class Basepath extends LightningElement {
     }
 
     handleUpdate() {
-        this.makeClassList();
+        this.makeClassList(this.selectedOption, true);
         this.dispatchEvent(new CustomEvent('select',{
             detail: this.selectedOption
         }));
         
         // confetti.loadConfetti(this);
+       // this.makeConfetti()
+    }
+
+    makeConfetti() {
         switch (this.selectedOption) {
             case 'Draft':
                 confetti.fireworks()
