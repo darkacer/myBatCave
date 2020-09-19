@@ -1,4 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
+import confetti from 'c/confetti';
 
 const isEqual = (str1, str2) => { return (str1.localeCompare(str2)) === 0}
 
@@ -11,6 +12,7 @@ export default class Basepath extends LightningElement {
 
     connectedCallback() {
         this.makeClassList()
+        confetti.loadConfetti(this);
     }
 
     makeClassList() {
@@ -61,5 +63,24 @@ export default class Basepath extends LightningElement {
         this.dispatchEvent(new CustomEvent('select',{
             detail: this.selectedOption
         }));
+        
+        // confetti.loadConfetti(this);
+        switch (this.selectedOption) {
+            case 'Draft':
+                confetti.fireworks()
+                break;
+            case 'Submitted To Customers':
+                confetti.confettiShower()
+                break;
+            case 'Ordered By Customers':
+                confetti.winnerCelebration()
+                break;
+            case 'Shipped':
+                confetti.busrtMode()
+                break;
+        
+            default:
+                break;
+        }
     }
 }
