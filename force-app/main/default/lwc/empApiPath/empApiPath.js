@@ -1,7 +1,9 @@
 import { api, LightningElement, track, wire} from 'lwc';
-import { getFieldValue, getRecord } from 'lightning/uiRecordApi';
+import { getFieldValue, getRecord, updateRecord } from 'lightning/uiRecordApi';
 import { subscribe, unsubscribe, onError, setDebugFlag, isEmpEnabled } from 'lightning/empApi';
 import STATUS_FIELD from '@salesforce/schema/Order.Status';
+import ID_FIELD from '@salesforce/schema/Order.Id';
+
 
 import { publish, MessageContext } from 'lightning/messageService';
 import SAMPLEMC from '@salesforce/messageChannel/shoppingMessageChannel__c';
@@ -23,8 +25,6 @@ export default class EmpApiPath extends LightningElement {
     channelName = '/data/OrderChangeEvent';
 
     handleSelect(event) {
-        console.log('selected option = ', event.detail)
-
         if(event.detail === 'Submitted To Customers') {
             const message = {
                 type: 'submitProducts'
@@ -32,19 +32,19 @@ export default class EmpApiPath extends LightningElement {
             publish(this.messageContext, SAMPLEMC, message);
         }
         
+        if(event.detail === 'Shipped') {
+            const fields = {};
+            fields[ID_FIELD.fieldApiName] = this.recordId;
+            fields[STATUS_FIELD.fieldApiName] = event.detail;
+            updateRecord({fields})
+            .then(() => {
+                console.log('record updated!')
+            })
+        } 
     }
 
-    // set status(val) {
-    //     this.defaultValue = val
-    //     console.log('im inside set', val)
-    // }
-
     get status() {
-        console.log('this.defaultValue', this.defaultValue)
         this.defaultValue = getFieldValue(this.order.data, STATUS_FIELD)
-        
-        console.log('this.defaultValue2', this.defaultValue)
-        // this.refreshChild(this.defaultValue)
         return this.defaultValue
     }
 

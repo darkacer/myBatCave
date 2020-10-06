@@ -13,7 +13,7 @@ public with sharing class UtilityClass {
         for(Schema.RecordTypeInfo recType: getSchemaInstance().get(sObjectAPIName).getDescribe().getRecordTypeInfos()){
             if(recType.isActive()){
                 recordTypeInfos.put(recType.getDeveloperName(), recType.getRecordTypeId());
-            }
+            }  
         }
         return recordTypeInfos;
     }

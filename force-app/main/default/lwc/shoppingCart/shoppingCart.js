@@ -1,11 +1,13 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire, track, api } from 'lwc';
 import { MessageContext, releaseMessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import getProuctById from '@salesforce/apex/ShoppingCart.getProuctById';
 import SAMPLEMC from "@salesforce/messageChannel/shoppingMessageChannel__c";
+import postData from '@salesforce/apex/CalloutHelper.postData'
 
 
 export default class ShoppingCart extends LightningElement {
     subscription;
+    @api recordId
 
     @wire(MessageContext)
     messageContext;
@@ -62,6 +64,7 @@ export default class ShoppingCart extends LightningElement {
     }  
 
     handleMessage(message) {
+        console.log('message is ', )
         this.receivedMessage = message ? JSON.stringify(message, null, '\t') : 'no message payload';
         if (JSON.parse(this.receivedMessage)['type'] === 'addNewProduct')
             this.rxId = JSON.parse(this.receivedMessage)['recordId'];
@@ -72,6 +75,23 @@ export default class ShoppingCart extends LightningElement {
 
     makeCallout() {
         console.log('inside make callout')
+        let body = {
+            data: {
+                orderId: this.recordId,
+                cartdata: this.products
+            }
+        }
+        postData({
+            url: 'https://acme-api-app.herokuapp.com/setCartData/',
+            body: JSON.stringify(body)
+        })
+        .then((response) => {
+            console.log('response is ', response)
+        })
+        .catch((error) => {
+            this.message = 'Error received: code' + error.errorCode + ', ' +
+                'message ' + error.body.message;
+        });
     }
 
 

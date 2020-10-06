@@ -24,5 +24,7 @@ public with sharing class FeedItemTriggerHandlerTest {
         Test.startTest();
             ConnectApi.FeedElement feedElement = ConnectApi.ChatterFeeds.postFeedElement(Network.getNetworkId(), feedItemInput);
         Test.stopTest();
+        
+
     }
 }
