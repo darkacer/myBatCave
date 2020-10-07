@@ -1,7 +1,7 @@
 public class OrderTriggerHandler {
     
     private static Map<String, String> userNameToTelegramId = new Map<String, String>();
-    private static String API_Key = 'bot1238384727:AAHzgCtmK3IayqI6rbHrM5pzXqpMwnrZwnA';
+    // private static String API_Key = 'bot1238384727:AAHzgCtmK3IayqI6rbHrM5pzXqpMwnrZwnA';
     
     static {
         userNameToTelegramId.put('Omkar Deokar', '662468461');
@@ -34,10 +34,12 @@ public class OrderTriggerHandler {
         }
     }
     
+    @future(callout=true)
     public static void sendTelegramMessage(String orderId, String userName) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://api.telegram.org/' + API_Key + '/sendMessage');
+        //request.setEndpoint('https://api.telegram.org/' + API_Key + '/sendMessage');
+        request.setEndpoint('callout:Telegram_Api/sendMessage');
         request.setMethod('GET');
         request.setHeader('Content-Type', 'application/json');
         request.setBody('{"chat_id": '+ userNameToTelegramId.get(userName) +',"text": " Your Order is Shipped, OrderId - '+orderId+'"}');
