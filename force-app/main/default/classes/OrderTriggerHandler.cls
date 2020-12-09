@@ -38,7 +38,6 @@ public class OrderTriggerHandler {
     public static void sendTelegramMessage(String orderId, String userName) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
-        //request.setEndpoint('https://api.telegram.org/' + API_Key + '/sendMessage');
         request.setEndpoint('callout:Telegram_Api/sendMessage');
         request.setMethod('GET');
         request.setHeader('Content-Type', 'application/json');
