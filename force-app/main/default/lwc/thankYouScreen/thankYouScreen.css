@@ -1,0 +1,53 @@
+body {
+    background: #333;
+  }
+  img {
+    position: absolute;
+    left: 60%;
+    top: 0px;
+    z-index: 1;
+    max-width: 30%;
+    padding-top: 2rem;
+  }
+  .mydiv{
+      position: absolute;
+      z-index: 4;
+      font-size: 1.3rem;
+      padding: 2.7rem;
+      width:60%;
+      -moz-user-select: none; 
+      -webkit-user-select: none;
+      -ms-user-select:none; 
+      user-select:none;
+      -o-user-select:none;
+  }
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    background-image: linear-gradient(to top, #3671aa 0%, #eeeeee 100%);
+    overflow: hidden;
+  }
+  
+
+  .wave {
+    width: 900px;
+    height: 1040px;
+    position: absolute;
+    top: -25%;
+    left: 30%;
+    margin-left: -500px;
+    margin-top: -500px;
+    border-radius: 40%;
+    background: rgb(255, 255, 255, 0.90);
+    animation: wave 20s infinite linear;
+  }
+  
+  @keyframes wave {
+    from { transform: rotate(0deg);}
+    from { transform: rotate(360deg);}
+  }
