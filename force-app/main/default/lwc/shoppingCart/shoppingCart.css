@@ -12,3 +12,6 @@
 .flex-container{
     display: flex;
 }
+.buttonclass {
+    --sds-c-button-destructive-color-background: pink
+}

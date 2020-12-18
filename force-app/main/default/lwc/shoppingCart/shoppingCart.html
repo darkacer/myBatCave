@@ -2,7 +2,7 @@
     <div class="dropcls" dropzone="link">
         <lightning-card title="My Bundle">
             <template if:true={products}>
-                <lightning-button label="Clear Bundle" onclick={clearCart} slot="actions" variant="destructive"></lightning-button>
+                <lightning-button label="Clear Bundle" onclick={clearCart} slot="actions" variant="destructive" class="buttonclass"></lightning-button>
                 <template for:each={products} for:item="prod">
                     <div key={prod.id} class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
                         <lightning-layout>
