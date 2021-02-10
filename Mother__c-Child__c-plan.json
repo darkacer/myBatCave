@@ -1,0 +1,18 @@
+[
+    {
+        "sobject": "Mother__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": [
+            "Mother__cs.json"
+        ]
+    },
+    {
+        "sobject": "Child__c",
+        "saveRefs": false,
+        "resolveRefs": true,
+        "files": [
+            "Child__cs.json"
+        ]
+    }
+]
