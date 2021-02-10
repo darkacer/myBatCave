@@ -20,3 +20,7 @@ public static String getDataType(String objectApi, String fieldName) {
 System.debug(getDataType('Contact', 'picture__c'));
 
 System.debug('out ' + UtilityClass.getRecordTypeByDevName('Account'));
+
+List<Account> accList = [Select Id, name From Account Limit 1];
+Account accnew = accList[0].clone(false, true, false, false);
+System.debug(accnew);
