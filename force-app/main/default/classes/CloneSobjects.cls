@@ -1,17 +1,25 @@
 public without sharing class CloneSobjects {
-    Boolean preserveId;
-    Boolean isDeepClone;
-    Boolean preserveReadonlyTimestamps;
-    Boolean preserveAutonumber;
+    Boolean preserveId = false;
+    Boolean isDeepClone = true;
+    Boolean preserveReadonlyTimestamps = false;
+    Boolean preserveAutonumber = false;
 
-    public static Map<Id, Id> templateToNewSobjectIdMap = new Map<Id, Id>();
+    /**
+     * Instance set to maintain set of records cloned
+     */
+    private Set<SObject> newlyInsertedRecordSet = new Set<SObject>();
 
-    public CloneSobjects() {
-        this.preserveId = false;
-        this.isDeepClone = true;
-        this.preserveReadonlyTimestamps = false;
-        this.preserveAutonumber = false;
+    /**
+     * @description Returns set of records cloned in this instance
+     */
+    public Set<SObject> getClonedRecords() {
+        return this.newlyInsertedRecordSet;
     }
+
+    /**
+     * Maintains map of template and cloned records when inserted
+     */
+    public static Map<Id, Id> templateToNewSobjectIdMap = new Map<Id, Id>();
 
     public CloneSobjects(Boolean preserveId, Boolean isDeepClone, Boolean preserveReadonlyTimestamps, Boolean preserveAutonumber) {
         this.preserveId = preserveId;
@@ -27,12 +35,9 @@ public without sharing class CloneSobjects {
         Object execute(SObject obj);
     }
 
-    public class ReturnId implements OverRideSobjectFields {
-        public Id execute(Sobject obj) {
-            return obj.Id;
-        }
-    }
-
+    /**
+     * @descrption Uses template record's fieldName to attach to cloned record's fieldName
+     */
     public class ReturnTemplateFieldValue implements OverRideSobjectFields {
         private String fieldName;
         public ReturnTemplateFieldValue(String fieldName) {
@@ -42,7 +47,9 @@ public without sharing class CloneSobjects {
             return obj.get(this.fieldName);
         }
     }
-
+    /**
+     * @description Uses template record's parent field to find new parent's Id
+     */
     public class ReturnParentFieldFromTemplate implements OverRideSobjectFields{
         private String fieldName;
         public ReturnParentFieldFromTemplate(String fieldName) {
@@ -53,17 +60,30 @@ public without sharing class CloneSobjects {
         }
     }
 
-    public CloneSobjects CloneSobjectsFrom(List<sObject> sObjectList, Map<String, OverRideSobjectFields> overRideMapping) {
+    /**
+     * @description Returns class's instance for further chaining, inserts 
+     * @param sObjectList - List of template SObject to be cloned
+     * @param overRideMapping - Map of fieldName (string) to a overRide interface implementation instance
+     */
+    public CloneSobjects cloneSobjectsFrom(List<SObject> sObjectList, Map<String, OverRideSobjectFields> overRideMapping, Boolean isInsert) {
         List<SObject> clonedSobjectList = new List<SObject>();
-        for(sObject obj : sObjectList) {
-            clonedSobjectList.add(CloneSobjectsFrom(obj, overRideMapping));
+        for(SObject obj : sObjectList) {
+            clonedSobjectList.add(cloneSobjectsFrom(obj, overRideMapping));
         }
-        insertSobject(clonedSobjectList, sObjectList);
+        if(isInsert) {
+            clonedSobjectList = insertSobject(clonedSobjectList, sObjectList);
+        }
+        this.newlyInsertedRecordSet.addAll(clonedSobjectList);
         return this;
     }
 
-    private sObject CloneSobjectsFrom(sObject obj, Map<String, OverRideSobjectFields> overRideMapping) {
-        sObject tempObject = obj.clone(
+    /**
+     * @description Returns newly Cloned SObject, follows the override fieldmapping
+     * @param obj - SObject to be cloned
+     * @param overRideMapping - Map of fieldName (string) to a overRide interface implementation instance
+     */
+    private SObject cloneSobjectsFrom(SObject obj, Map<String, OverRideSobjectFields> overRideMapping) {
+        SObject tempObject = obj.clone(
             this.preserveId,
             this.isDeepClone,
             this.preserveReadonlyTimestamps,
@@ -77,7 +97,12 @@ public without sharing class CloneSobjects {
         return tempObject;
     }
 
-    private void insertSobject(List<SObject> sObjectList, List<SObject> templateSobjectList) {
+    /**
+     * @description Inserts newly cloned Sobject list and maintains mapping from template to cloned record id in static map
+     * @param sObjectList - List of SObject to be cloned
+     * @param templateSobjectList - List of SObject to be cloned from
+     */
+    private List<SObject> insertSobject(List<SObject> sObjectList, List<SObject> templateSobjectList) {
         try {
             Insert sObjectList;
             for(Integer i = 0; i < sObjectList.size(); i++) {
@@ -86,5 +111,6 @@ public without sharing class CloneSobjects {
         } catch (Exception e) {
             System.debug(e);
         }
+        return sObjectList;
     }
 }

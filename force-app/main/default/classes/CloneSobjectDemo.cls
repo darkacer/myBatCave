@@ -14,9 +14,9 @@ public class CloneSobjectDemo {
         };
 
         new CloneSObjects()
-            .CloneSobjectsFrom(accList, null)
-            .CloneSobjectsFrom(conList, overRideMapContact)
-            .CloneSobjectsFrom(oppList, overRideMapOpp);
+            .cloneSobjectsFrom(accList, null, true)
+            .cloneSobjectsFrom(conList, overRideMapContact, true)
+            .cloneSobjectsFrom(oppList, overRideMapOpp, true);
         
     }
 }
