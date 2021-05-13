@@ -7,4 +7,17 @@
     <lightning-button label='Get Accounts' value='Account' onclick={handleClick}></lightning-button>
     <lightning-button label='Get Opportunity' value='Opportunity' onclick={handleClick}></lightning-button>
     <c-child-display my-child-list={myList} s-object-type={objectType}></c-child-display>
+
+    <div class="app slds-p-around_x-large">
+		<h1 class="slds-text-heading_large">{title}</h1>
+		<h3>Write JavaScript, HTML, and CSS code, and preview the output in the interactive code editor.</h3>
+		<lightning-button variant="brand" label="Brand" title="Primary action" onclick={handleClick}
+			class="slds-m-left_x-small"></lightning-button>
+		<!-- Using an if statement -->
+		<lightning-input type="text" label="Enter some text"></lightning-input>
+		<lightning-badge label="Badge Label"></lightning-badge>
+		<lightning-textarea name="input1" label="Enter some text"></lightning-textarea>
+		<lightning-pill label="With only remove handler" onremove={handleRemove}></lightning-pill>
+	</div>
+
 </template>

@@ -38,10 +38,11 @@ public class OrderTriggerHandler {
     public static void sendTelegramMessage(String orderId, String userName) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
+        //request.setEndpoint('https://api.telegram.org/' + API_Key + '/sendMessage')
         request.setEndpoint('callout:Telegram_Api/sendMessage');
         request.setMethod('GET');
         request.setHeader('Content-Type', 'application/json');
-        request.setBody('{"chat_id": '+ userNameToTelegramId.get(userName) +',"text": " Your Order is Shipped, OrderId - '+orderId+'"}');
+        request.setBody('{"chat_id": '+ userNameToTelegramId.get(userName) +',"text": "Hey ' + userName + ', your Order is Shipped, OrderId - '+ orderId +'"}');
         HttpResponse response = http.send(request);
         // Parse the JSON response
         if (response.getStatusCode() != 201) {
@@ -49,6 +50,7 @@ public class OrderTriggerHandler {
                          response.getStatusCode() + ' ' + response.getStatus());
         } else {
             System.debug(response.getBody());
+            system.debug('hi more!');
         }
     }
     

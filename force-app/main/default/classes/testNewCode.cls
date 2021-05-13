@@ -1,5 +1,16 @@
 global class testNewCode {
     
+    //private Id id = 'abc';
+    private String name = 'myname';
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public static testNewCode getInstance() {
+        return new testNewCode();
+    }
+    
     public void put() {
      
     	system.debug('hello');

@@ -1,3 +1,26 @@
 p {
     color: red;
 }
+
+:host {
+  --sds-c-button-brand-color-background: purple;
+  --sds-c-button-brand-color-border: purple;
+  --sds-c-input-color-background: pink;
+  --sds-c-pill-color-background: pink;
+  --sds-c-input-radius-border: 5rem;
+  /* Other CSS custom properties here */
+  --sds-c-badge-color-background: #0C9DDA;
+  --sds-c-badge-text-color: #FFFFFF;
+  --sds-c-textarea-color-background: purple;
+}
+
+h1 {
+    color: rgb(0, 112, 210);
+}
+
+.app {
+    background-color: #fafaf9;
+    height: 100vh;
+    overflow: scroll;
+}
+

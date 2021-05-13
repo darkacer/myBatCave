@@ -1,0 +1,31 @@
+{
+  "queries": [
+    {
+      "query": "select id, name, Type, Phone from account where id = '0017F00000Dk5JaQAJ' Limit 1",
+      "saveRefs": true,
+      "resolveRefs": false,
+      "sObject": "Account",
+      "files": [
+        "Accounts.json"
+      ]
+    },
+    {
+      "query": "select Id, lastname, accountid, name from Contact where account.id = '0017F00000Dk5JaQAJ'",
+      "saveRefs": true,
+      "resolveRefs": true,
+      "sObject": "Contact",
+      "files": [
+        "Contacts.json"
+      ]
+    },
+    {
+      "query": "select id, name, AccountId from Opportunity where Account.id = '0017F00000Dk5JaQAJ'",
+      "saveRefs": true,
+      "resolveRefs": true,
+      "sObject": "Opportunity",
+      "files": [
+        "Opportunities.json"
+      ]
+    }
+  ]
+}

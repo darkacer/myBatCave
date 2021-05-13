@@ -7,13 +7,13 @@ public without sharing class CloneSobjects {
     /**
      * Instance set to maintain set of records cloned
      */
-    private Set<SObject> clonedRecordSet = new Set<SObject>();
+    private Set<SObject> newlyInsertedRecordSet = new Set<SObject>();
 
     /**
      * @description Returns set of records cloned in this instance
      */
     public Set<SObject> getClonedRecords() {
-        return this.clonedRecordSet;
+        return this.newlyInsertedRecordSet;
     }
 
     /**
@@ -73,7 +73,7 @@ public without sharing class CloneSobjects {
         if(isInsert) {
             clonedSobjectList = insertSobject(clonedSobjectList, sObjectList);
         }
-        this.clonedRecordSet.addAll(clonedSobjectList);
+        this.newlyInsertedRecordSet.addAll(clonedSobjectList);
         return this;
     }
 

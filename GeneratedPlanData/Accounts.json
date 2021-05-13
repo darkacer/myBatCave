@@ -1,0 +1,13 @@
+{
+	"records": [
+		{
+			"attributes": {
+				"type": "Account",
+				"referenceId": "AccountRef0"
+			},
+			"Name": "United Oil & Gas Corp.",
+			"Type": "Customer - Direct",
+			"Phone": "(212) 842-5500"
+		}
+	]
+}

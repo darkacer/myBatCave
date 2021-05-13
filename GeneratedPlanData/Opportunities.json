@@ -1,0 +1,84 @@
+{
+	"records": [
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef0"
+			},
+			"Name": "United Oil SLA",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef1"
+			},
+			"Name": "United Oil Installations",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef2"
+			},
+			"Name": "United Oil Installations",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef3"
+			},
+			"Name": "United Oil Refinery Generators",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef4"
+			},
+			"Name": "United Oil Office Portable Generators",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef5"
+			},
+			"Name": "United Oil Refinery Generators",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef6"
+			},
+			"Name": "United Oil Installations",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef7"
+			},
+			"Name": "United Oil Emergency Generators",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef8"
+			},
+			"Name": "United Oil Standby Generators",
+			"AccountId": "@AccountRef0"
+		},
+		{
+			"attributes": {
+				"type": "Opportunity",
+				"referenceId": "OpportunityRef9"
+			},
+			"Name": "United Oil Plant Standby Generators",
+			"AccountId": "@AccountRef0"
+		}
+	]
+}

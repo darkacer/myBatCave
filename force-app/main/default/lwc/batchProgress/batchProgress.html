@@ -1,0 +1,17 @@
+<template>
+    <lightning-card>
+        <h3 slot="title">
+            <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
+            Batch Progress {recordsProcessed}
+        </h3>
+        <div slot="footer">
+            <lightning-button
+                label="Start Batch"
+                onclick={startBatch}
+            ></lightning-button>
+        </div>
+        <div>
+            <lightning-progress-bar value={processedPercent} size="large" variant="circular"></lightning-progress-bar>
+        </div>
+    </lightning-card>
+</template>

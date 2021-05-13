@@ -1,0 +1,40 @@
+{
+	"records": [
+		{
+			"attributes": {
+				"type": "Contact",
+				"referenceId": "ContactRef0"
+			},
+			"LastName": "Pavlova",
+			"AccountId": "@AccountRef0",
+			"Name": "Stella Pavlova"
+		},
+		{
+			"attributes": {
+				"type": "Contact",
+				"referenceId": "ContactRef1"
+			},
+			"LastName": "Song",
+			"AccountId": "@AccountRef0",
+			"Name": "Arthur Song"
+		},
+		{
+			"attributes": {
+				"type": "Contact",
+				"referenceId": "ContactRef2"
+			},
+			"LastName": "Boyle",
+			"AccountId": "@AccountRef0",
+			"Name": "Lauren Boyle"
+		},
+		{
+			"attributes": {
+				"type": "Contact",
+				"referenceId": "ContactRef3"
+			},
+			"LastName": "Green",
+			"AccountId": "@AccountRef0",
+			"Name": "Avi Green"
+		}
+	]
+}
