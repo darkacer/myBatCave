@@ -1,3 +1,16 @@
 <template>
-    This is duration tracker component
+    <lightning-card class="slds-text-align_center">
+        <lightning-button-icon icon-name={buttonName} variant="brand" onclick={playPauseClick} slot="actions" ></lightning-button-icon>
+        <div class="text">
+            {string}
+        </div>
+        <p slot="footer">
+            <c-related-sessions-datatable
+                record-id={recordId}
+            ></c-related-sessions-datatable>
+        </p>
+        <p slot="title">
+            Total time {totalTime}
+        </p>
+    </lightning-card>
 </template>

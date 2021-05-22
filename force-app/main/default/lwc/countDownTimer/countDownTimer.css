@@ -1,0 +1,22 @@
+.center {
+  text-align: center;
+  
+}
+
+.text {
+    display: inline-block;
+    line-height: 1.875rem;
+    min-height: calc(1.875rem + 2px);
+    width: 50%;
+    font-size: 30px;
+    margin: 3%;
+    border: none!important;
+    text-align: center;
+}
+
+.red {
+    border: 3px solid red;
+}
+.green {
+    border: 3px solid green;
+}
