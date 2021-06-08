@@ -6,6 +6,7 @@ public with sharing class BatchProgressController {
         try {
             ProcessAccountsBatch pab = new ProcessAccountsBatch();
             batchId = Database.executeBatch(pab, 10);
+            
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }

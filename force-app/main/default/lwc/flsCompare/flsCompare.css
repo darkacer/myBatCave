@@ -1,0 +1,39 @@
+th {
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(252 252 252);
+}
+
+table {
+  border: thin;
+  border-collapse: collapse;
+  border-radius: 0.8em;
+  overflow: hidden;
+  table-layout: fixed;
+}
+thead th {
+  line-height: 30pt;
+  overflow: hidden;
+  vertical-align: middle;
+}
+td {
+  line-height: 25pt;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tableHeader {
+  background-color: #eeeeee;
+}
+.fieldDetailCol {
+  width: 15%;
+}
+.toggleBox {
+  left: 10%;
+  top: 30px;
+  display: inline-block;
+}
+.fieldCol {
+  background-color: #e4e4e4;
+}

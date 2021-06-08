@@ -8,11 +8,7 @@ const generateObjValPair = (_dataArray) => {
 const addDependentValues = (_dataArray, data_picklist, dependee) => {
     let count = 0
     return _dataArray.map( item => 
-        Object.assign(  
-            item, 
-            { index: count++ }, 
-            { dependentValues: generateObjValPair(data_picklist[item[dependee]]) }
-        )
+        Object.assign(item, {index: count++}, {dependentValues: generateObjValPair(data_picklist[item[dependee]])})
     )
 }
 export { generateObjValPair, addDependentValues }

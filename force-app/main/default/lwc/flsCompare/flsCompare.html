@@ -1,0 +1,239 @@
+<template>
+  <lightning-card icon-name="action:manage_perm_sets">
+    <h3 slot="title" class="slds-text-heading_large slds-text-title_bold">
+      Field Level Security Check
+    </h3>
+
+    <div class="slds-box slds-p-around_large">
+      <lightning-layout>
+        <lightning-layout-item
+          flexibility="auto"
+          padding="around-small"
+          size="10"
+        >
+          <lightning-layout>
+            <lightning-layout-item
+              flexibility="auto"
+              padding="around-small"
+              size="3"
+            >
+              <lightning-combobox
+                label="Select Object Type"
+                name="objectType"
+                value={objectType}
+                options={obtectTypeOptions}
+                onchange={handleobjectTypeFilter}
+                placeholder="Object Type"
+              ></lightning-combobox>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              flexibility="auto"
+              padding="around-small"
+              size="3"
+            >
+              <lightning-combobox
+                label="Select Object"
+                name="sObject"
+                value={sobjectvalue}
+                options={sobjectoptions}
+                onchange={handleobjectFilter}
+                placeholder="Select Object"
+              ></lightning-combobox>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              flexibility="auto"
+              padding="around-small"
+              size="3"
+            >
+              <c-lwc-multi-select-lookup
+                label-name="Search Permission Set"
+                object-api-name="PermissionSet"
+                field-api-names="Id,Name"
+                filter-field-api-name="Label"
+                icon-name="standard:custom"
+                onretrieve={selectItemEventHandler}
+                onremove={deleteItemEventHandler}
+                max-selection="5"
+              >
+              </c-lwc-multi-select-lookup>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              flexibility="auto"
+              padding="around-small"
+              size="3"
+            >
+              <lightning-combobox
+                label="Access Level"
+                name="access"
+                value={acessvalue}
+                options={accessOptions}
+                onchange={handleFLSFilter}
+                placeholder="Select Access Level"
+                disabled={disableOption}
+              ></lightning-combobox>
+            </lightning-layout-item>
+          </lightning-layout>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          flexibility="auto"
+          padding="around-small"
+          size="2"
+        >
+          <lightning-input
+            type="toggle"
+            label="Permission Type"
+            name="typeCheck"
+            message-toggle-active="System Permissions"
+            message-toggle-inactive="Field Permissions"
+            onchange={handleCheckType}
+            class="toggleBox"
+          ></lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <div class="slds-align_absolute-center slds-m-around_large">
+        <lightning-button
+          icon-name="utility:search"
+          label="Search"
+          title="Search"
+          onclick={searchFLS}
+          variant="brand"
+        ></lightning-button>
+      </div>
+
+      <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+      </div>
+    </div>
+
+    <template if:true={allFields}>
+      <div class="slds-box slds-p-around_large">
+        <lightning-layout class="slds-p-horizontal_medium">
+          <lightning-layout-item size="5"></lightning-layout-item>
+          <lightning-layout-item size="5"></lightning-layout-item>
+          <lightning-layout-item size="2">
+            <div class="slds-p-horizontal_x-large slds-p-bottom_medium">
+              <lightning-input
+                type="text"
+                label="Field Detail Filter"
+                value={filterText}
+                onchange={handleFieldSearch}
+              ></lightning-input>
+            </div>
+          </lightning-layout-item>
+        </lightning-layout>
+
+        <div class="slds-p-horizontal_xx-large">
+          <table border="1" class="tblSample">
+            <thead class="tableHeader">
+              <tr>
+                <th colspan="3" class="fieldCol">Field Details</th>
+                <th colspan={psHeaderColSpan}>Permission Set Details</th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th class="fieldDetailCol">Field Name</th>
+                <th class="fieldDetailCol">Field API Name</th>
+                <th class="fieldDetailCol">Field Type</th>
+                <template for:each={permissionSets} for:item="psName">
+                  <th key={psName}>{psName}</th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={tableData} for:item="permission">
+                <tr key={permission}>
+                  <td class="slds-truncate slds-var-p-left_x-small">
+                    <span title={permission.fieldInfo.fieldLabel}>
+                      {permission.fieldInfo.fieldLabel}
+                    </span>
+                  </td>
+                  <td
+                    class="slds-truncate slds-var-p-left_x-small"
+                    title={permission.fieldInfo.fieldAPIName}
+                  >
+                    {permission.fieldInfo.fieldAPIName}
+                  </td>
+                  <td class="slds-var-p-left_x-small">
+                    {permission.fieldInfo.fieldType}
+                  </td>
+                  <template
+                    for:each={permission.fieldPermissionsInfo}
+                    for:item="fls"
+                  >
+                    <td key={fls} class="slds-text-align_center">
+                      <template if:true={fls.PermissionsRead}>
+                        <template if:true={fls.PermissionsEdit}>
+                          <template if:true={permissionType}>
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              title="edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template if:false={permissionType}>
+                            <lightning-icon
+                              icon-name="utility:edit_form"
+                              alternative-text="Edit"
+                              title="edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </template>
+                        <template if:false={fls.PermissionsEdit}>
+                          <lightning-icon
+                            icon-name="utility:preview"
+                            alternative-text="Read only"
+                            title="Read only"
+                            size="xx-small"
+                          ></lightning-icon>
+                        </template>
+                      </template>
+                      <template if:false={fls.PermissionsRead}>
+                        <template if:true={permissionType}>
+                          <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="No access"
+                            title="No access"
+                            size="xx-small"
+                          ></lightning-icon>
+                        </template>
+                        <template if:false={permissionType}>
+                          <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="No access"
+                            title="No access"
+                            size="xx-small"
+                          ></lightning-icon>
+                        </template>
+                      </template>
+                    </td>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="slds-align_absolute-center slds-p-around_medium">
+        <p>
+          <lightning-button
+            icon-name="utility:download"
+            label="Download as CSV"
+            title="Download CSV File"
+            onclick={exportToCSV}
+            variant="brand"
+          ></lightning-button>
+        </p>
+      </div>
+    </template>
+  </lightning-card>
+</template>

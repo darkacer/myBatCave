@@ -4,6 +4,24 @@ public with sharing class DurationTracker {
     }
 
     @AuraEnabled
+    public static void setDuration(String context){
+        try {
+            System.debug('inside apex method ' + context);
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static void checkOtherInstances(String hashString){
+        try {
+            // get the hash string 
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
     public static void insertSession(Id userId, Id caseId, Integer durationSeconds){
         try {
             // check if record is already present for the given userid and caseid combo

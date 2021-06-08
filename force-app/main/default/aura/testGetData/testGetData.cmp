@@ -1,0 +1,19 @@
+<aura:component controller="ContactController" implements="force:appHostable,flexipage:availableForRecordHome,force:hasRecordId">
+    <!--forceRefreshViewComp-->
+    <aura:handler name="init" value="{! this}" action="{! c.doInit}" />
+    <aura:handler event="force:refreshView" action="{! c.doInit}" />
+    
+    
+    <aura:attribute name="account" type="Mother__c" />
+    <aura:attribute name="number" type="Integer" />   
+       
+
+    <lightning:card title="Account Detail">
+        <lightning:input type='number' onchange='{!c.handleChange}' value='{!v.number}' label='Number'></lightning:input>
+        <div class="slds-m-horizontal_small">
+            <Strong>mother Name:</Strong> {! v.account.Name}	<br/>
+            <Strong>age Status:</Strong> {! v.account.Age__c}
+        </div>
+    </lightning:card>
+    
+</aura:component>

@@ -1,0 +1,16 @@
+<template>
+  <lightning-tabset active-tab-value="Audit Trail Scan">
+    <lightning-tab label="Audit Trail Scan" value="Audit Trail Scan">
+      <c-audit-trail></c-audit-trail>
+    </lightning-tab>
+    <lightning-tab
+      label="Permission Set Compare"
+      value="Permission Set Compare"
+    >
+      <c-fls-compare></c-fls-compare>
+    </lightning-tab>
+    <lightning-tab label="Access Check" value="Access Check">
+      <c-permission-audit></c-permission-audit>
+    </lightning-tab>
+  </lightning-tabset>
+</template>

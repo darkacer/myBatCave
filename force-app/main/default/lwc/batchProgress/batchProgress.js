@@ -1,12 +1,13 @@
 import { LightningElement, track } from 'lwc';
 import { subscribe, unsubscribe } from 'lightning/empApi';
 import startBatch from '@salesforce/apex/BatchProgressController.startBatch';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BatchProgress extends LightningElement {
 
     channelName = '/event/Batch_Progress__e';
     @track recordsProcessed = 0;
-    totalRecords = 100;
+    totalRecords = 65;
     subscription = {};
     
     get processedPercent() {
@@ -24,7 +25,10 @@ export default class BatchProgress extends LightningElement {
     handleSubscribe() {
         // Callback invoked whenever a new event message is received
         const messageCallback = (response) => {
+            console.log('New message received: ', JSON.stringify(response));
             // Response contains the payload of the new message received
+            console.log(response.data.payload.Count__c, 'count is');
+            this.recordsProcessed = response.data.payload.Count__c;
             this.updateRecordValue(response.data.payload.Count__c);
         };
 
@@ -39,6 +43,7 @@ export default class BatchProgress extends LightningElement {
 
     updateRecordValue(count) {
         this.recordsProcessed = count;
+        console.log('updating the count ', this.recordsProcessed);
     }
 
     handleUnsubscribe() {
@@ -52,6 +57,7 @@ export default class BatchProgress extends LightningElement {
     }
 
     startBatch() {
+        console.log('starting a batch job');
         startBatch({})
         .then((result) => {
             console.log('batch job started = ');

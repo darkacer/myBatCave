@@ -1,0 +1,150 @@
+<template>
+  <lightning-card icon-name="action:log_event">
+    <h3 slot="title" class="slds-text-heading_large slds-text-title_bold">
+      Audit Trail Scan
+    </h3>
+    <div class="slds-box slds-p-around_large">
+      <lightning-layout>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+          <lightning-combobox
+            label="Action Type"
+            name="progress"
+            value={actionValue}
+            options={typeOptions}
+            onchange={handleTypeChange}
+            placeholder="Select Access Type"
+          ></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+          <template if:true={psOptions}>
+            <lightning-combobox
+              label="Permission Set"
+              name="progress"
+              value={value}
+              options={psOptions}
+              onchange={handlePSChange}
+              placeholder="Select Permission Set"
+              disabled={disableOption}
+            ></lightning-combobox>
+          </template>
+          <template if:true={error}>
+            <p>Error</p>
+            {error}
+          </template>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+          <lightning-combobox
+            label="Access Level"
+            name="progress"
+            value={accessLevelValue}
+            options={accessOptions}
+            onchange={handleAccessChange}
+            placeholder="Select Access Set"
+            data-id="accessLevelId"
+          ></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+          <lightning-input
+            type="date"
+            name="input1"
+            label="Date Range"
+            onchange={handleDateChange}
+          ></lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <template if:true={displaySearch}>
+        <div class="slds-align_absolute-center slds-m-around_large">
+          <lightning-button
+            icon-name="utility:search"
+            label="Search"
+            title="Search"
+            onclick={searchAudit}
+            variant="brand"
+          ></lightning-button>
+        </div>
+      </template>
+
+      <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+      </div>
+    </div>
+
+    <template if:true={data}>
+      <lightning-layout class="slds-p-horizontal_medium">
+        <lightning-layout-item size="5"></lightning-layout-item>
+        <lightning-layout-item size="5"></lightning-layout-item>
+        <lightning-layout-item size="2">
+          <div class="slds-p-around_medium">
+            <lightning-input
+              type="text"
+              label="Filter Result"
+              value={filterText}
+              onchange={handleFilterChange}
+            ></lightning-input>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <lightning-layout class="slds-box slds-p-around_large" multiple-rows>
+        <lightning-layout-item size="12">
+          <lightning-datatable
+            key-field="id"
+            data={tempData}
+            row-number-offset={rowOffset}
+            hide-checkbox-column
+            columns={columns}
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onsort={onHandleSort}
+            resize-column-disabled
+          >
+          </lightning-datatable>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          class="slds-align_absolute-center slds-p-vertical_large"
+          size="12"
+        >
+          <lightning-button
+            label="Previous"
+            icon-name="utility:chevronleft"
+            onclick={previousHandler}
+            variant="brand"
+            disabled={disablePrevious}
+          ></lightning-button>
+
+          <span class="slds-badge slds-badge_lightest paginationInfo">
+            Page {page} of {totalPage}
+          </span>
+
+          <lightning-button
+            label="Next"
+            icon-name="utility:chevronright"
+            icon-position="right"
+            onclick={nextHandler}
+            variant="brand"
+            disabled={disableNext}
+          ></lightning-button>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="12"
+          class="slds-align_absolute-center slds-p-around_medium"
+        >
+          <p>
+            <lightning-button
+              icon-name="utility:download"
+              label="Download as CSV"
+              title="Download CSV File"
+              onclick={exportToCSV}
+              variant="brand"
+            ></lightning-button>
+          </p>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+  </lightning-card>
+</template>

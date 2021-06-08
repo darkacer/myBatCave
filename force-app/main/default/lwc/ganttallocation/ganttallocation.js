@@ -1,8 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 
-// const dateOption = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
-const MONTH_SLOT_SIZE = 31;
+const dateOption = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
 
 export default class Ganttallocation extends NavigationMixin(LightningElement) {
     @api _project;
@@ -92,26 +91,30 @@ export default class Ganttallocation extends NavigationMixin(LightningElement) {
     }
 
     calculateLeftAndRight(temp) {
-        if (this.dateIncrement === MONTH_SLOT_SIZE) {
-            temp.left = this.monthCorrector(this.startDate, temp.startDate, 'left')
-            temp.right = this.monthCorrector(this.startDate, temp.endDate, 'right')
-            return temp
-        }
         let taskStart = Date.parse(temp.startDate) - 24 * 3600 * 1000
         let taskEnd = Date.parse(temp.endDate)
         let startDate = Date.parse(JSON.stringify(new Date(this.startDate)).slice(1,11))
-        
+        if (this.dateIncrement === 31) {
+            temp.left = this.monthCorrector(this.startDate, temp.startDate, 'left')
+            temp.right = this.monthCorrector(this.startDate, temp.endDate, 'right')
+            console.log(temp.left, ' in ',temp.right)
+            return temp
+        }
         temp.left = (taskStart - startDate) / 1000 / 3600 / 24 / this.dateIncrement
         temp.right = (taskEnd - startDate) / 1000 / 3600 / 24 / this.dateIncrement
         return temp
     }
 
     monthCorrector(dateFrom, dateTo, type) {
-        let numberOfMonths = this.monthDiff(new Date(dateFrom), new Date(dateTo))
+        let main = this.monthDiff(new Date(dateFrom), new Date(dateTo))
+        //let offset = (Date.parse(this.firstDateOfMonth(new Date(dateTo))) - new Date(dateTo).setHours(0,0,0)) / 1000 / 3600 / 24 / this.dateIncrement
         let myDateTo = new Date(dateTo);
         let preDate =  (type === 'left') ? -1 / this.getDaysInMonth(myDateTo) : 0
+        console.log(preDate)
+        console.log(this.getDaysInMonth(myDateTo) )
         let offset = myDateTo.getDate() / this.getDaysInMonth(myDateTo)
-        return numberOfMonths + offset + preDate;
+        console.log('date and its offset', dateTo, offset )
+        return main + offset + preDate;
     }
 
     addDays(date, days) {

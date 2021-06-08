@@ -1,0 +1,110 @@
+<template>
+  <div class="slds-form-element">
+    <label class="slds-form-element__label">{labelName}</label>
+    <div class="slds-form-element__control">
+      <div class="slds-combobox_container">
+        <div
+          class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+          aria-expanded="true"
+          aria-haspopup="listbox"
+          role="combobox"
+        >
+          <div
+            class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-has-focus"
+            role="none"
+          >
+            <lightning-input
+              id="input"
+              value={searchInput}
+              onchange={onchangeSearchInput}
+              variant="label-hidden"
+              aria-autocomplete="list"
+              role="textbox"
+              autocomplete="off"
+              placeholder={placeholder}
+              type="search"
+            >
+            </lightning-input>
+          </div>
+
+          <template if:true={isDisplayMessage}>
+            <lightning-card>No records found.</lightning-card>
+          </template>
+          <template if:false={isDisplayMessage}>
+            <template if:true={isDialogDisplay}>
+              <section
+                aria-describedby="dialog-body-id-26"
+                aria-label="Language Options"
+                class="slds-popover slds-popover_full-width"
+                id="popover-unique-id-02"
+                role="dialog"
+              >
+                <div
+                  class="slds-popover__body slds-popover__body_small"
+                  id="dialog-body-id-26"
+                >
+                  <fieldset class="slds-form-element">
+                    <lightning-checkbox-group
+                      name="Checkbox Group"
+                      label={objectAPIName}
+                      options={items}
+                      value={value}
+                      onchange={handleCheckboxChange}
+                    >
+                    </lightning-checkbox-group>
+                  </fieldset>
+                </div>
+                <footer class="slds-popover__footer slds-popover__footer_form">
+                  <lightning-button
+                    label="Cancel"
+                    title="Cancel"
+                    onclick={handleCancelClick}
+                    class="slds-m-left_x-small"
+                  ></lightning-button>
+                  <lightning-button
+                    variant="brand"
+                    label="Done"
+                    title="Done"
+                    onclick={handleDoneClick}
+                    class="slds-m-left_x-small"
+                  ></lightning-button>
+                  <lightning-button
+                    variant="destructive"
+                    label="Clear"
+                    title="Clear"
+                    onclick={handleClearClick}
+                    class="slds-m-left_x-small"
+                  ></lightning-button>
+                </footer>
+              </section>
+            </template>
+          </template>
+
+          <template if:false={isDialogDisplay}>
+            <div
+              class="slds-form-element__control slds-input-has-icon slds-input-has-icon slds-input-has-icon_left-right slds-p-vertical_xx-small"
+              role="none"
+            >
+              <template for:each={globalSelectedItems} for:item="selectedItem">
+                <span key={selectedItem.value}>
+                  <lightning-pill
+                    label={selectedItem.label}
+                    name={selectedItem.value}
+                    data-item={selectedItem.value}
+                    onremove={handleRemoveRecord}
+                  >
+                    <lightning-icon
+                      icon-name={iconName}
+                      variant="circle"
+                      alternative-text={selectedItem.label}
+                    ></lightning-icon>
+                  </lightning-pill>
+                </span>
+              </template>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

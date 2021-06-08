@@ -1,0 +1,21 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller='showDetailController' >
+	hello world
+    
+    <aura:attribute name="myMumber" type="integer" default="10"/>
+    <aura:attribute name="motherRecord" type="Mother__c"/>
+    
+    
+  {!v.motherRecord.name}
+    {!v.motherRecord.Age__c}
+    {!v.motherRecord.Occupation__c}
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div> {!v.myNumber2}</div>
+    
+	<lightning:input type='number' onchange='{!c.myAction}' value='{!v.myMumber}' ></lightning:input> 
+    
+    
+    <lightning:button label='Click me' onclick='{!c.handleClick}'></lightning:button>
+    
+</aura:component>

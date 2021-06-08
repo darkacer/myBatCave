@@ -1,0 +1,347 @@
+<template>
+  <lightning-card icon-name="action:password_unlock">
+    <h3 slot="title" class="slds-text-heading_large slds-text-title_bold">
+      Object/Field Access Check
+    </h3>
+
+    <div class="slds-box slds-p-around_large">
+      <lightning-layout>
+        <lightning-layout-item
+          flexibility="auto"
+          padding="around-small"
+          size="2"
+        ></lightning-layout-item>
+
+        <lightning-layout-item
+          flexibility="auto"
+          padding="around-small"
+          size="3"
+        >
+          <lightning-combobox
+            label="Select Object Type"
+            name="objectType"
+            value={objectType}
+            options={obtectTypeOptions}
+            onchange={handleobjectTypeFilter}
+            placeholder="Object Type"
+          ></lightning-combobox>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          flexibility="auto"
+          padding="around-small"
+          size="3"
+        >
+          <lightning-combobox
+            label="Select Object"
+            name="sObject"
+            value={sobjectvalue}
+            options={sobjectoptions}
+            onchange={handleobjectFilter}
+            placeholder="Select Object"
+          ></lightning-combobox>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          flexibility="auto"
+          padding="around-small"
+          size="3"
+        >
+          <lightning-combobox
+            label="Select Field"
+            name="sObject"
+            value={fieldvalue}
+            options={fieldOptions}
+            onchange={handleFieldSelect}
+            placeholder="Select Field"
+          ></lightning-combobox>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <div class="slds-align_absolute-center slds-m-around_large">
+        <lightning-button
+          icon-name="utility:search"
+          label="Search"
+          title="Search"
+          onclick={fetchDetails}
+          variant="brand"
+        ></lightning-button>
+      </div>
+
+      <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+      </div>
+    </div>
+
+    <template if:true={allData}>
+      <lightning-accordion
+        class="example-accordion"
+        onsectiontoggle={handleToggleSection}
+        active-section-name="objPerm"
+      >
+        <lightning-accordion-section name="objPerm" label="Object Permission">
+          <div class="slds-p-around_large">
+            <div class="slds-p-horizontal_xx-large">
+              <table border="1" class="tblSample">
+                <thead>
+                  <tr>
+                    <th class="fieldDetailCol">Name</th>
+                    <th class="fieldDetailCol">Parent Name</th>
+                    <th class="fieldDetailCol">Parent Type</th>
+                    <th class="fieldDetailCol">Create</th>
+                    <th class="fieldDetailCol">Read</th>
+                    <th class="fieldDetailCol">Edit</th>
+                    <th class="fieldDetailCol">View All</th>
+                    <th class="fieldDetailCol">Modify All</th>
+                    <th class="fieldDetailCol">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={tableData} for:item="permission">
+                    <template if:true={permission.IsObject}>
+                      <tr key={permission}>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                        >
+                          <span title={permission.Name}>
+                            {permission.Name}
+                          </span>
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.ParentName}
+                        >
+                          {permission.ParentName}
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.ParentType}
+                        >
+                          {permission.ParentType}
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.fieldAPIName}
+                        >
+                          <template if:true={permission.PermissionsCreate}>
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template if:false={permission.PermissionsCreate}>
+                            <lightning-icon
+                              icon-name="utility:close"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.fieldAPIName}
+                        >
+                          <template if:true={permission.PermissionsRead}>
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template if:false={permission.PermissionsRead}>
+                            <lightning-icon
+                              icon-name="utility:close"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.fieldAPIName}
+                        >
+                          <template if:true={permission.PermissionsEdit}>
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template if:false={permission.PermissionsEdit}>
+                            <lightning-icon
+                              icon-name="utility:close"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.fieldAPIName}
+                        >
+                          <template
+                            if:true={permission.PermissionsViewAllRecords}
+                          >
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template
+                            if:false={permission.PermissionsViewAllRecords}
+                          >
+                            <lightning-icon
+                              icon-name="utility:close"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.fieldAPIName}
+                        >
+                          <template
+                            if:true={permission.PermissionsModifyAllRecords}
+                          >
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template
+                            if:false={permission.PermissionsModifyAllRecords}
+                          >
+                            <lightning-icon
+                              icon-name="utility:close"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </td>
+                        <td
+                          class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          title={permission.fieldAPIName}
+                        >
+                          <template if:true={permission.PermissionsDelete}>
+                            <lightning-icon
+                              icon-name="utility:check"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                          <template if:false={permission.PermissionsDelete}>
+                            <lightning-icon
+                              icon-name="utility:close"
+                              alternative-text="Edit"
+                              size="xx-small"
+                            ></lightning-icon>
+                          </template>
+                        </td>
+                      </tr>
+                    </template>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="fieldPerm" label="Field Permissions">
+          <template if:false={selectedField}>
+            <span
+              class="slds-text-heading_large slds-text-title_bold slds-align_absolute-center"
+            >
+              Select the field to check for access
+            </span>
+          </template>
+          <template if:true={selectedField}>
+            <div class="slds-p-around_large">
+              <div class="slds-p-horizontal_xx-large">
+                <table border="1" class="tblSample">
+                  <thead>
+                    <tr>
+                      <th class="fieldDetailCol">Name</th>
+                      <th class="fieldDetailCol">Parent Name</th>
+                      <th class="fieldDetailCol">Parent Type</th>
+                      <th class="fieldDetailCol">Read</th>
+                      <th class="fieldDetailCol">Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template for:each={tableData} for:item="permission">
+                      <template if:true={permission.IsField}>
+                        <tr key={permission}>
+                          <td
+                            class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                          >
+                            <span title={permission.Name}>
+                              {permission.Name}
+                            </span>
+                          </td>
+                          <td
+                            class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                            title={permission.ParentName}
+                          >
+                            {permission.ParentName}
+                          </td>
+                          <td
+                            class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                            title={permission.ParentType}
+                          >
+                            {permission.ParentType}
+                          </td>
+                          <td
+                            class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                            title={permission.fieldAPIName}
+                          >
+                            <template if:true={permission.PermissionsRead}>
+                              <lightning-icon
+                                icon-name="utility:check"
+                                alternative-text="Edit"
+                                size="xx-small"
+                              ></lightning-icon>
+                            </template>
+                            <template if:false={permission.PermissionsRead}>
+                              <lightning-icon
+                                icon-name="utility:close"
+                                alternative-text="Edit"
+                                size="xx-small"
+                              ></lightning-icon>
+                            </template>
+                          </td>
+                          <td
+                            class="slds-truncate slds-var-p-left_x-small slds-text-align_center"
+                            title={permission.fieldAPIName}
+                          >
+                            <template if:true={permission.PermissionsEdit}>
+                              <lightning-icon
+                                icon-name="utility:check"
+                                alternative-text="Edit"
+                                size="xx-small"
+                              ></lightning-icon>
+                            </template>
+                            <template if:false={permission.PermissionsEdit}>
+                              <lightning-icon
+                                icon-name="utility:close"
+                                alternative-text="Edit"
+                                size="xx-small"
+                              ></lightning-icon>
+                            </template>
+                          </td>
+                        </tr>
+                      </template>
+                    </template>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </template>
+        </lightning-accordion-section>
+      </lightning-accordion>
+    </template>
+  </lightning-card>
+</template>

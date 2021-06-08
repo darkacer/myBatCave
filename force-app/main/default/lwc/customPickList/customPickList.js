@@ -36,6 +36,7 @@ export default class CustomPickList extends LightningElement {
 
     connectedCallback() {
         this.recTypeId = this.recordTypeId;
+        console.log('im isncde picklist controller', this.selectedValue)
     }
     
 }

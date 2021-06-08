@@ -37,7 +37,7 @@ export default class CountDownTimer extends LightningElement {
 
     checkPageFocus() {
         // console.log('this.templae', this, this.template);
-        //let element = this.document.querySelector('.center');
+        let element = this.document.querySelector('.center');
         if(this.document.hasFocus()) {
             console.log('inside has focus');
             // element.classList.remove("red");
