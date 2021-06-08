@@ -1,11 +1,9 @@
 import { LightningElement, track } from 'lwc';
 import readFileFromRecord from '@salesforce/apex/ReadFileData.readFileFromRecord';
-import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
-
+import { loadScript } from 'lightning/platformResourceLoader';
 import sheetjs from '@salesforce/resourceUrl/sheetjs';
 
 let XLS = {};
-
 export default class DataLoader extends LightningElement {
     @track acceptedFormats = ['.xls', '.xlsx'];
     uploadedFile; 
@@ -13,28 +11,19 @@ export default class DataLoader extends LightningElement {
     
 
     connectedCallback() {
-        console.log('hi file updaload component loaded ');
-        // this.readFromFile();
-
         Promise.all([
             // loadScript(this, sheetjs + '/sheetjs/sheetjs.js'),
             loadScript(this, sheetjs + '/sheetjs/sheetmin.js')
           ]).then(() => {
-            console.log("loaded sheetminjs ");
             XLS = XLSX
-            console.log('xls ', XLS);
             this.readFromFile()
           })
-        
-
     }
 
 
     async readFromFile() {
         let returnVal = await readFileFromRecord({recordId:'test'})
-        console.log(returnVal);
         let wb = XLS.read(returnVal, {type:'base64', WTF:false});
-        console.log(wb);
         console.log(this.to_json(wb));
     }
 
@@ -49,13 +38,32 @@ export default class DataLoader extends LightningElement {
 
     handleUploadFinished(event){
         const uploadedFiles = event.detail.files;
-        console.log(JSON.stringify(uploadedFiles));
         if(uploadedFiles.length > 0) {   
-            console.log("File lenght is ", uploadedFiles.length);
+            this.ExcelToJSON(uploadedFiles[0])
         }
-
-
     }
 
-
+    ExcelToJSON(file){
+        var reader = new FileReader();
+        reader.onload = event => {
+            var data=event.target.result;
+            var workbook=XLS.read(data, {
+                type: 'binary'
+            });
+            var XL_row_object = XLS.utils.sheet_to_row_object_array(workbook.Sheets["Your sheet name"]);
+            var data = JSON.stringify(XL_row_object);
+            console.log(JSON.stringify(data));
+        };
+        reader.onerror = function(ex) {
+            this.error=ex;
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error while reding the file',
+                    message: ex.message,
+                    variant: 'error',
+                }),
+            );
+        };
+        reader.readAsBinaryString(file);
+    }
 }
