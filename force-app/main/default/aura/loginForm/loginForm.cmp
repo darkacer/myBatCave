@@ -1,9 +1,9 @@
 <!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
-<aura:component controller="LightningLoginFormController">
+<aura:component controller="LightningLoginFormController" implements="forceCommunity:availableForAllPageTypes">
     <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private"/>
     <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
     <aura:attribute name="startUrl" type="String" required="false" description="The url you go to after a successful login" />
-    <aura:attribute name="usernameLabel" type="String" required="false" default="Username"/>
+    <aura:attribute name="usernameLabel" type="String" required="false" default="Usernames"/>
     <aura:attribute name="passwordLabel" type="String" required="false" default="Password"/>
     <aura:attribute name="loginButtonLabel" type="String" required="false" default="Log in"/>
     <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />        
@@ -28,7 +28,10 @@
     <aura:handler event="c:setExpId" action="{!c.setExpId}"/>    
     <aura:dependency resource="c:setExpId" type="EVENT"/>  
     
+    <aura:attribute name="username" type="string" default='omkar'></aura:attribute>
+    
     <div>
+        {!v.username} username is 23
         <aura:renderIf isTrue="{!v.isUsernamePasswordEnabled}">
             <span>
                 <aura:renderIf isTrue="{!v.showError}">
@@ -36,10 +39,11 @@
                         <ui:outputRichText value="{!v.errorMessage}"/>
                     </div>
                 </aura:renderIf>
-            </span>            
+            </span>         
             <div id="sfdc_username_container" class="sfdc">
                 <span id="sfdc_user" class="login-icon" data-icon="a"></span>
-                <ui:inputText value="" aura:id="username" placeholder="{!v.usernameLabel}" keyup="{!c.onKeyUp}" class="input sfdc_usernameinput sfdc" label="{!v.usernameLabel}" labelClass="assistiveText"/>
+                <ui:inputText value="{!v.username}" updateOn="input" aura:id="username" placeholder="{!v.usernameLabel}" keyup="{!c.onKeyUp}" class="input sfdc_usernameinput sfdc" label="{!v.usernameLabel}" labelClass="assistiveText"/>
+                
             </div>
     
             <div id="sfdc_password_container" class="sfdc">

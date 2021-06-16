@@ -1,0 +1,4 @@
+<apex:page showHeader="false">
+    <title>Cricket Score</title>
+    Hi this is survey page 
+</apex:page>

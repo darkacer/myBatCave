@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Platform event that is fired by an lwc component when that component is loaded and unloaded
+just place this component on the detail page to fire this platform event</description>
+    <eventType>HighVolume</eventType>
+    <label>Record accessed</label>
+    <pluralLabel>Record accessed</pluralLabel>
+</CustomObject>

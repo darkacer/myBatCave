@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustomObj__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>my child</description>
+    <externalId>false</externalId>
+    <label>CustomObj</label>
+    <referenceTo>CustomObj__c</referenceTo>
+    <relationshipLabel>CustomObj</relationshipLabel>
+    <relationshipName>CustomObj</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

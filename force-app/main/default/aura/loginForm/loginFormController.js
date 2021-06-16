@@ -1,11 +1,21 @@
 ({
     initialize: function(component, event, helper) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const username = urlParams.get('username')
+        console.log('username from aura', username);
+        component.find("username").set("v.value", username);
+        component.set('v.username', username);
+        
         $A.get("e.siteforce:registerQueryEventMap").setParams({"qsToEvent" : helper.qsToEventMap}).fire();    
         $A.get("e.siteforce:registerQueryEventMap").setParams({"qsToEvent" : helper.qsToEventMap2}).fire();
         component.set('v.isUsernamePasswordEnabled', helper.getIsUsernamePasswordEnabled(component, event, helper));
         component.set("v.isSelfRegistrationEnabled", helper.getIsSelfRegistrationEnabled(component, event, helper));
         component.set("v.communityForgotPasswordUrl", helper.getCommunityForgotPasswordUrl(component, event, helper));
         component.set("v.communitySelfRegisterUrl", helper.getCommunitySelfRegisterUrl(component, event, helper));
+        
+        component.find("username").set("v.value", username);
+        console.log('serting the user name ', username)
     },
     
     handleLogin: function (component, event, helpler) {
@@ -27,9 +37,13 @@
         helper.setBrandingCookie(component, event, helper);
     },
     
-    onKeyUp: function(component, event, helpler){
+    onKeyUp: function(component, event, helper){
         //checks for "enter" key
+        var searchInput = component.find("username");
+        var searchValue = searchInput.get("v.value");
+        console.log("value is ", searchValue)
         if (event.getParam('keyCode')===13) {
+            console.log('hi incide ')
             helpler.handleLogin(component, event, helpler);
         }
     },

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exp_sub_date__c</fullName>
+    <externalId>false</externalId>
+    <formula>DATETIMEVALUE(
+TEXT(  Today__c   + 1)
++
+&quot; &quot; +
+&apos;04:01:00&apos;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Exp sub date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

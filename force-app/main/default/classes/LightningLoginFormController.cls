@@ -47,6 +47,7 @@ global class LightningLoginFormController {
     private static Auth.AuthConfiguration getAuthConfig(){
         Id networkId = Network.getNetworkId();
         Auth.AuthConfiguration authConfig = new Auth.AuthConfiguration(networkId,'');
+        system.debug('debug is ' + authConfig + networkId);
         return authConfig;
     }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Custom_list</fullName>
+    <columns>NAME</columns>
+    <columns>Childrens__c</columns>
+    <columns>Sons__c</columns>
+    <columns>Daughters__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>Custom list</label>
+</ListView>
