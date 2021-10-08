@@ -7,6 +7,11 @@ public with sharing class getAccountDetails {
         return [Select id, name from Account limit 12];
     }
     @AuraEnabled
+    public static List<Object> getData(List<String> columns, String sObjectName ){
+        String query = 'SELECT ' + String.join(columns, ',') + ' FROM ' + sObjectName + ' LIMIT 10';
+        return Database.query(query);
+    }
+    @AuraEnabled
     public static List<Account> getAccountsKey(String key){
         System.debug('this is me!!' + key);
         return [Select id, name from Account where name like :key];

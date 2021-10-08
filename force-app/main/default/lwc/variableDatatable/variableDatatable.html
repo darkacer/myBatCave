@@ -1,0 +1,12 @@
+<template>
+    hi thisis table
+    <template if:true={showData}>
+        <c-custom-data-table
+            key-field="id"
+            data={fullData}
+            show-row-number-column="false"
+            hide-checkbox-column="false"
+            columns={columns_show}
+        ></c-custom-data-table>
+    </template>
+</template>

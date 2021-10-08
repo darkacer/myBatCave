@@ -6,18 +6,14 @@ import sheetjs from '@salesforce/resourceUrl/sheetjs';
 let XLS = {};
 export default class DataLoader extends LightningElement {
     @track acceptedFormats = ['.xls', '.xlsx'];
-    uploadedFile; 
-    fileName;
-    
 
     connectedCallback() {
         Promise.all([
-            // loadScript(this, sheetjs + '/sheetjs/sheetjs.js'),
             loadScript(this, sheetjs + '/sheetjs/sheetmin.js')
-          ]).then(() => {
+        ]).then(() => {
             XLS = XLSX
             this.readFromFile()
-          })
+        })
     }
 
 
@@ -50,7 +46,7 @@ export default class DataLoader extends LightningElement {
             var workbook=XLS.read(data, {
                 type: 'binary'
             });
-            var XL_row_object = XLS.utils.sheet_to_row_object_array(workbook.Sheets["Your sheet name"]);
+            var XL_row_object = XLS.utils.sheet_to_row_object_array(workbook.Sheets["Sheet1"]);
             var data = JSON.stringify(XL_row_object);
             console.log(JSON.stringify(data));
         };
