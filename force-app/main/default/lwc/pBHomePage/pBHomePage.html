@@ -1,0 +1,18 @@
+<template>
+    <div class="branding">Salesforce Pushbullet</div>
+    <div style="min-width: 225px; border-right: 1px solid #e7e7e7; padding-left:1rem">
+        <template if:true={defaultActiveTab}>
+            <lightning-tabset active-tab-value={defaultActiveTab}>
+                <template for:each={navigationList} for:item="action">
+                    <lightning-tab label={action.label} key={action.id} value={action.name}>
+                        <c-p-b-current-action
+                            key={action.id}
+                            page-type={action.name}
+                        ></c-p-b-current-action>
+                        {action.id}//{action.name}
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </template>
+    </div>
+</template>

@@ -4,16 +4,24 @@ public without sharing class CloneSobjects {
     Boolean preserveReadonlyTimestamps = false;
     Boolean preserveAutonumber = false;
 
+    public CloneSObjects(){}
+
     /**
      * Instance set to maintain set of records cloned
      */
     private Set<SObject> newlyInsertedRecordSet = new Set<SObject>();
+
+    private List<sObject> newlyGeneratedRecords = new List<sObject>();
 
     /**
      * @description Returns set of records cloned in this instance
      */
     public Set<SObject> getClonedRecords() {
         return this.newlyInsertedRecordSet;
+    }
+
+    public List<sObject> getGeneratedRecords() {
+        return this.newlyGeneratedRecords;
     }
 
     /**
@@ -50,7 +58,7 @@ public without sharing class CloneSobjects {
     /**
      * @description Uses template record's parent field to find new parent's Id
      */
-    public class ReturnParentFieldFromTemplate implements OverRideSobjectFields{
+    public class ReturnParentFieldFromTemplate implements OverRideSobjectFields {
         private String fieldName;
         public ReturnParentFieldFromTemplate(String fieldName) {
             this.fieldName = fieldName;
@@ -59,21 +67,37 @@ public without sharing class CloneSobjects {
             return templateToNewSobjectIdMap.get((Id)obj.get(this.fieldName));
         }
     }
+    /**
+     * @description to determin how to resolve refs while CLI
+     */
+    public class RetrunParentRrefFromTemplate implements OverRideSobjectFields {
+        private String fieldName;
+        public RetrunParentRrefFromTemplate(String fieldName) {
+            this.fieldName = fieldName;
+        }
+        public Object execute(Sobject obj) {
+            return '@' + obj.get(this.fieldName);
+        }
+    }
 
     /**
      * @description Returns class's instance for further chaining, inserts 
      * @param sObjectList - List of template SObject to be cloned
      * @param overRideMapping - Map of fieldName (string) to a overRide interface implementation instance
      */
-    public CloneSobjects cloneSobjectsFrom(List<SObject> sObjectList, Map<String, OverRideSobjectFields> overRideMapping, Boolean isInsert) {
+    public CloneSobjects cloneSobjectsFrom(List<SObject> sObjectList, Map<String, OverRideSobjectFields> overRideMapping, Boolean isInsert, Boolean saveRefs) {
         List<SObject> clonedSobjectList = new List<SObject>();
         for(SObject obj : sObjectList) {
             clonedSobjectList.add(cloneSobjectsFrom(obj, overRideMapping));
         }
         if(isInsert) {
             clonedSobjectList = insertSobject(clonedSobjectList, sObjectList);
+            this.newlyInsertedRecordSet.addAll(clonedSobjectList);
         }
-        this.newlyInsertedRecordSet.addAll(clonedSobjectList);
+        if(saveRefs) {
+            saveRefs(clonedSobjectList, sObjectList);
+            this.newlyGeneratedRecords.addAll(clonedSobjectList);
+        }
         return this;
     }
 
@@ -110,6 +134,13 @@ public without sharing class CloneSobjects {
             }
         } catch (Exception e) {
             System.debug(e);
+        }
+        return sObjectList;
+    }
+
+    private List<sObject> saveRefs(List<SObject> sObjectList, List<SObject> templateSobjectList) {
+        for(Integer i = 0; i < sObjectList.size(); i++) {
+            sObjectList[i].Id = templateSobjectList[i].Id;
         }
         return sObjectList;
     }

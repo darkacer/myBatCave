@@ -6,12 +6,27 @@
     <label>mypage</label>
     <packageVersions>
         <majorNumber>1</majorNumber>
-        <minorNumber>17</minorNumber>
+        <minorNumber>91</minorNumber>
+        <namespace>CaseTimer19</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>228</majorNumber>
+        <minorNumber>7</minorNumber>
+        <namespace>SBQQ</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>20</minorNumber>
         <namespace>sf_chttr_apps</namespace>
     </packageVersions>
     <packageVersions>
         <majorNumber>1</majorNumber>
         <minorNumber>7</minorNumber>
         <namespace>sf_com_apps</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>0</minorNumber>
+        <namespace>vfv</namespace>
     </packageVersions>
 </ApexPage>

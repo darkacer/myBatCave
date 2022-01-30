@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>custom_parent__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Generic Custom Parameter Parent</label>
+    <referenceTo>Generic_Custom_JSON__c</referenceTo>
+    <relationshipLabel>Generic Custom</relationshipLabel>
+    <relationshipName>Generic_Custom</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

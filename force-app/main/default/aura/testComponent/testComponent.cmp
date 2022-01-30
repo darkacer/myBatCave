@@ -1,3 +1,7 @@
-<aura:component>
+<aura:component controller="TreeComponentController" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
     hi
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="identifierName" type="String" default="testIden" />
+    
+    <lightning:input name="input3" value="{! v.identifierName }" label="Identifier Name" placeholder="type here..."/>
 </aura:component>

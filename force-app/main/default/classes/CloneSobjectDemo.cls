@@ -5,7 +5,14 @@ public class CloneSobjectDemo {
         List<Contact> conList = [Select Id, account.name,account.description, lastname from contact where Accountid = :accList[0].Id];
         List<Opportunity> oppList = [Select Id, name, Amount, CloseDate, AccountId, StageName From Opportunity Where Accountid = :accList[0].Id];
         
+        Map<String, CloneSObjects.OverRideSobjectFields> overRideAccountMap = new Map<String, CloneSObjects.OverRideSobjectFields> {
+            // only copies fields from template's records
+            'ShippingCity' => new CloneSObjects.ReturnTemplateFieldValue('BillingCity')
+        };
+
+
         Map<String, CloneSObjects.OverRideSobjectFields> overRideMapContact = new Map<String, CloneSObjects.OverRideSobjectFields> {
+            // copies fields from parent records
             'AccountId' => new CloneSObjects.ReturnParentFieldFromTemplate('AccountId')
         };
             
@@ -14,9 +21,9 @@ public class CloneSobjectDemo {
         };
 
         new CloneSObjects()
-            .cloneSobjectsFrom(accList, null, true)
-            .cloneSobjectsFrom(conList, overRideMapContact, true)
-            .cloneSobjectsFrom(oppList, overRideMapOpp, true);
+            .cloneSobjectsFrom(accList, null, true, false)
+            .cloneSobjectsFrom(conList, overRideMapContact, true, false)
+            .cloneSobjectsFrom(oppList, overRideMapOpp, true, false);
         
     }
 }
