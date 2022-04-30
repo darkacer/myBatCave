@@ -1,5 +1,11 @@
 <template>
-    <div class="branding">Salesforce Pushbullet</div>
+    <div class="branding">
+        <span>Salesforce Pushbullet</span>
+        <span>
+            <lightning-input type="text" label="Enter some text" value={textosend} onchange={handleInputChange}></lightning-input>
+            <lightning-button label="Send To Telegram" title="Non-primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        </span>
+    </div>
     <div style="min-width: 225px; border-right: 1px solid #e7e7e7; padding-left:1rem">
         <template if:true={defaultActiveTab}>
             <lightning-tabset active-tab-value={defaultActiveTab}>

@@ -30,7 +30,7 @@ public with sharing class CloneSObjectLibrary {
         }
     }
 
-    private static Attachment generateFullPlan(Set<String> sobjectSequence, String dt, Id attachingToId) {
+    public static Attachment generateFullPlan(Set<String> sobjectSequence, String dt, Id attachingToId) {
         List<Object> objSeq = new List<Object>();
 
         for(String obj :sobjectSequence) {
