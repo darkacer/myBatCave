@@ -3,7 +3,6 @@ public without sharing class PushBulletController {
 
     }
     private static Map<String, String> userNameToTelegramId = new Map<String, String>();
-    // private static String API_Key = 'bot1238384727:AAHzgCtmK3IayqI6rbHrM5pzXqpMwnrZwnA';
     
     static {
         userNameToTelegramId.put('Omkar Deokar', '662468461');
