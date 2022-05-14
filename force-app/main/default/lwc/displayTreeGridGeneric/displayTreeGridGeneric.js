@@ -5,8 +5,7 @@ const EXAMPLES_COLUMNS_DEFINITION_BASIC = [
     {
         type: 'text',
         fieldName: 'name',
-        label: 'Account Name',
-        initialWidth: 300,
+        label: 'Account Name'
     },
     {
         type: 'text',
@@ -36,7 +35,6 @@ export default class DisplayTreeGrid extends LightningElement {
     }
 
     connectedCallback() {
-        console.log('connectedCallback');
         this.searchKey = 'abcs';
         findRecords({ queryString: this.searchKey })
         .then(result => {
@@ -67,44 +65,12 @@ export default class DisplayTreeGrid extends LightningElement {
             }
             parentToChildMap[record[this.parentName]].push(record);
         });
-
-        // print both maps to console
-        console.log('childToParentMap', childToParentMap);
-        console.log('parentToChildMap', parentToChildMap);
-        console.log('idToRecordMap', idToRecordMap);
-
-        
         // this.items.push(this.generateTree(parentToChildMap, idToRecordMap, parentToChildMap['undefined'][0].Id));
         this.gridData.push(this.generateTableTree(parentToChildMap, idToRecordMap, parentToChildMap['undefined'][0].Id));
-        console.log('items stringify', JSON.stringify(this.items));
-
-
-    }
-
-    generateTree(parentToChildMap, idToRecordMap, elementId) {
-        console.log('generateTree', parentToChildMap, idToRecordMap, elementId);
-        let record = idToRecordMap[elementId];
-        console.log('record', record);
-        let temp = {
-           label: record[this.label],
-           expanded: true,
-           items:[],
-           href: '/' + record['Id']
-        }
-        console.log('temp', temp);
-        if(parentToChildMap.hasOwnProperty(elementId) && parentToChildMap[elementId] && parentToChildMap[elementId].length > 0) {
-            parentToChildMap[elementId].forEach(child => {
-                temp.items.push(this.generateTree(parentToChildMap, idToRecordMap, child.Id));
-            });
-        }
-        // let items = [temp];
-        return temp;
     }
 
     generateTableTree(parentToChildMap, idToRecordMap, elementId) {
-        console.log('generateTree', parentToChildMap, idToRecordMap, elementId);
         let record = idToRecordMap[elementId];
-        console.log('record', record);
         let temp = {
            name: record['Name'],
            identifier: record['Identifier__c'],
@@ -112,16 +78,11 @@ export default class DisplayTreeGrid extends LightningElement {
            parent: (record['custom_parent__r'] && record['custom_parent__r']['Name'] ? record['custom_parent__r']['Name'] : 'undefined'),
            _children:[]
         }
-        console.log('temp', temp);
         if(parentToChildMap.hasOwnProperty(elementId) && parentToChildMap[elementId] && parentToChildMap[elementId].length > 0) {
             parentToChildMap[elementId].forEach(child => {
                 temp._children.push(this.generateTableTree(parentToChildMap, idToRecordMap, child.Id));
             });
         }
-        // let items = [temp];
         return temp;
-
     }
-
-    
 }
