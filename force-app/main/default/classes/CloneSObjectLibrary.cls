@@ -2,15 +2,22 @@ public with sharing class CloneSObjectLibrary {
     public static void insertAttachments(CloneSObjects cloneInstance, Id attachingToId) {
         Map<String, List<sObject>> dataMap = new Map<String, List<sObject>>();
         Set<String> sobjectSequence = new Set<String>();
-        
-        for(SObject sobj : cloneInstance.getGeneratedRecords()) {
-            String sobjectName = String.valueOf(sobj.getSObjectType());
-            if(!dataMap.containsKey(sobjectName)) {
-                dataMap.put(sobjectName, new List<sObject>());
+        System.debug('Cloned records: ' + cloneInstance.getGeneratedRecords());
+        Integer counter = 0;
+        for(List<sObject> sObjectList : cloneInstance.getGeneratedRecords()) {
+            system.debug('outer list ' + sObjectList);
+            String sobjectName = String.valueOf(sObjectList[0].getSObjectType()) + '--' + counter++;
+            for(SObject sobj : sObjectList) {
+                if(!dataMap.containsKey(sobjectName)) {
+                    dataMap.put(sobjectName, new List<sObject>());
+                }
+                dataMap.get(sobjectName).add(sObj);
             }
-            dataMap.get(sobjectName).add(sObj);
             sobjectSequence.add(sobjectName);
+            //counter++;
         }
+        System.debug('sobjectSequence ' + sobjectSequence);
+        System.debug('dataMap ' + dataMap);
         List<Attachment> listOfAttachments = new List<Attachment>();
         DateTime dt = DateTime.now();
         String dateTimeStr = dt.format('yyyy/MM/dd hh:mm:ss');
@@ -31,15 +38,16 @@ public with sharing class CloneSObjectLibrary {
     }
 
     public static Attachment generateFullPlan(Set<String> sobjectSequence, String dt, Id attachingToId) {
+        Integer counter = 0;
         List<Object> objSeq = new List<Object>();
-
+        System.debug('sobjectSequence: ' + sobjectSequence);
         for(String obj :sobjectSequence) {
-            List<String> fileNameList = new List<String>{dt + obj + '.json'};
+            List<String> fileNameList = new List<String>{counter++ + dt + obj + '.json'};
 
             Map<String, Object> objMap = new Map<String, Object>{
                 'saveRefs'    => true,
                 'resolveRefs' => true,
-                'sObject'     => obj,
+                'sObject'     => obj.split('--')[0],
                 'files'       => fileNameList
             };
             objSeq.add(objMap);

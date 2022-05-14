@@ -11,7 +11,7 @@ public without sharing class CloneSobjects {
      */
     private Set<SObject> newlyInsertedRecordSet = new Set<SObject>();
 
-    private List<sObject> newlyGeneratedRecords = new List<sObject>();
+    private List<List<sObject>> newlyGeneratedRecords = new List<List<sObject>>();
 
     /**
      * @description Returns set of records cloned in this instance
@@ -20,7 +20,7 @@ public without sharing class CloneSobjects {
         return this.newlyInsertedRecordSet;
     }
 
-    public List<sObject> getGeneratedRecords() {
+    public List<List<sObject>> getGeneratedRecords() {
         return this.newlyGeneratedRecords;
     }
 
@@ -96,7 +96,9 @@ public without sharing class CloneSobjects {
         }
         if(saveRefs) {
             saveRefs(clonedSobjectList, sObjectList);
-            this.newlyGeneratedRecords.addAll(clonedSobjectList);
+            List<sObject> tempList = clonedSobjectList;
+            this.newlyGeneratedRecords.add(tempList);
+            // this.newlyGeneratedRecords.addAll(clonedSobjectList);
         }
         return this;
     }
