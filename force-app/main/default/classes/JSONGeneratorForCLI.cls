@@ -5,16 +5,15 @@
     with SFDX import cmd 
 */
 public with sharing class JSONGeneratorForCLI {
-    private static Id recordId = 'a097F00000BC6czQAD';
-    public JSONGeneratorForCLI() {
+    public static Id recordId = 'a097F00000BC6czQAD';
+    public JSONGeneratorForCLI() {}
 
-    }
-
-    public static void demo() {
-
+    public static void demo(Id recordId) {
+        recordId = recordId;
         List<Generic_Custom_JSON__c> parentList = [
             SELECT Id, Identifier__c, Name, OwnerId, SystemModstamp, Value__c, custom_parent__c
             FROM Generic_Custom_JSON__c
+            // WHERE custom_parent__c = null
             WHERE Id = 'a1h7F0000093VodQAE'
         ];
 

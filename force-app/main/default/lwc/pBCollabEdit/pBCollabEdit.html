@@ -1,0 +1,12 @@
+<template>
+    <template if:true={codeData}>
+        <div class="editor">
+            <div class="line-numbers">
+              <template for:each={numberOfLines} for:item="lineNumber">
+                <span key={lineNumber}></span>
+              </template>
+            </div>
+            <textarea onkeyup={keyPressed}>{codeData}</textarea>
+          </div>
+    </template>
+</template>

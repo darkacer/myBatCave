@@ -56,7 +56,7 @@ public with sharing class CloneSObjectLibrary {
         Attachment attachment = new Attachment();
         attachment.ParentId = attachingToId;
         attachment.Name = dt + ' FullPlan.json';
-        attachment.Body = Blob.valueOf(JSON.serialize(objSeq));
+        attachment.Body = Blob.valueOf(JSON.serializePretty(objSeq));
 
         return attachment;
     }
