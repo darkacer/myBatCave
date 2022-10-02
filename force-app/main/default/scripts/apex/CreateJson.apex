@@ -1,8 +1,24 @@
-public with sharing class CloneSObjectDAGUtility {
+public class WrapperClass {
+    public List<sObject> records;
+    public String sObjectName;
+    public Set<String> fieldsToRef;
+    public Boolean hasSelfRelationship;
+    public String ifSelfRefThenFieldName;
 
-    private static String timeNow = String.valueOf(System.now());
+    public WrapperClass(List<sObject> records,  Set<String> fieldsToRef, String sObjectName,Boolean hasSelfRelationship, String ifSelfRefThenFieldName) {
+        this.records = records;
+        this.sObjectName = sObjectName;
+        this.fieldsToRef = fieldsToRef;
+        this.hasSelfRelationship = hasSelfRelationship;
+        this.ifSelfRefThenFieldName = ifSelfRefThenFieldName;
+    }
+}
+
+public class CloneSObjectDAGUtility {
+
+    private String timeNow = String.valueOf(System.now());
     
-    public static void main(List<CloneSObjectDAG.WrapperClass> wapList, Id attachmentRecord) {
+    public  void main(List<WrapperClass> wapList, Id attachmentRecord) {
         List<Attachment> attachmentList = new List<Attachment>();
 
         Attachment planAttachment = new Attachment(
@@ -12,7 +28,7 @@ public with sharing class CloneSObjectDAGUtility {
 
         List<Object> planBodyArray = new List<Object>();
 
-        for(CloneSObjectDAG.WrapperClass wap : wapList) {
+        for(WrapperClass wap : wapList) {
 
             List<Object> listObject = convertSobjectListToList(wap.records, wap.fieldsToRef, wap.sObjectName);
             System.debug(listObject);
@@ -25,26 +41,7 @@ public with sharing class CloneSObjectDAGUtility {
                 attachmentList.add(createAttachmentFile(wap.sObjectName, JSON.serializePretty(objectAttachmentStructure), attachmentRecord));
                 planBodyArray.add(generatePlanRecord(wap.sObjectName, getFileName(wap.sObjectName)));
             } 
-            else {
-                system.debug('before reccursive calls ' + objectAttachmentStructure);
-                system.debug('before reccursive calls == ' + wap.ifSelfRefThenFieldName);
-                system.debug('before reccursive calls == ' + attachmentRecord);
-                system.debug('before reccursive calls == ' + wap.sObjectName);
-                List<Attachment> allSelfRefAttachmentList = CloneSObjectDAGSelfRefObject.main(
-                    JSON.serializePretty(objectAttachmentStructure),
-                    wap.ifSelfRefThenFieldName,
-                    attachmentRecord,
-                    wap.sObjectName
-                );
-                System.debug('allSelfRefAttachmentList ==== ' +allSelfRefAttachmentList);
-
-                Integer i = 0;
-                for(Attachment at :allSelfRefAttachmentList) {
-                    planBodyArray.add(generatePlanRecord(wap.sObjectName, CloneSObjectDAGSelfRefObject.generatCounterFileName(i++, wap.sObjectName)));
-                }
-
-                attachmentList.addAll(allSelfRefAttachmentList);
-            }
+            
         }
 
         planAttachment.body = Blob.valueOf(JSON.serializePretty(planBodyArray));
@@ -53,16 +50,9 @@ public with sharing class CloneSObjectDAGUtility {
         if(!attachmentList.isEmpty()) {
             insert attachmentList;
         }
-        
-
-        
     }
 
-    private static List<Attachment> generateSelfRefAttachments(String fullBody) {
-        return null;
-    }
-
-    private static Map<String,Object> generatePlanRecord(String objectName, String fileName) {
+    public  Map<String,Object> generatePlanRecord(String objectName, String fileName) {
         Map<String, Object> retObject = new Map<String,Object>();
         retObject.put('saveRefs', true);
         retObject.put('resolveRefs', true);
@@ -71,7 +61,7 @@ public with sharing class CloneSObjectDAGUtility {
         return retObject;
     }
 
-    private static Map<String, Object> convertSobjectToMap(sObject sObj, Set<String> fieldsToRef, String sObjectName) {
+    private  Map<String, Object> convertSobjectToMap(sObject sObj, Set<String> fieldsToRef, String sObjectName) {
         Map<String, Object> sObjMap = new Map<String, Object>();
         fieldsToRef = convertToLowerCase(fieldsToRef);
         for(String key : Schema.getGlobalDescribe().get(sObjectName).getDescribe().fields.getMap().keySet()) {
@@ -102,7 +92,7 @@ public with sharing class CloneSObjectDAGUtility {
     so Contact(id='1',name='abc',accountId='123')
     becomes [{name:'abc',id:'1','accountId':'@123'}]
      */
-    private static List<Object> convertSobjectListToList(List<sObject> sObjectList, Set<String> fieldsToRef, String sObjectName) {
+    private  List<Object> convertSobjectListToList(List<sObject> sObjectList, Set<String> fieldsToRef, String sObjectName) {
         List<Object> listOfSObj = new List<Object>();
         for(sObject sObj : sObjectList) {
             listOfSObj.add(convertSobjectToMap(sObj, fieldsToRef, sObjectName));
@@ -110,7 +100,7 @@ public with sharing class CloneSObjectDAGUtility {
         return listOfSObj;
     }
 
-    private static Attachment createAttachmentFile(String sObjectName, String body, Id attachmentRecord) {
+    private  Attachment createAttachmentFile(String sObjectName, String body, Id attachmentRecord) {
         String fileName = getFileName(sObjectName);
 
         Attachment at = new Attachment(
@@ -121,7 +111,7 @@ public with sharing class CloneSObjectDAGUtility {
         return at;
     }
 
-    private static Set<String> convertToLowerCase(Set<String> inputSet) {
+    private  Set<String> convertToLowerCase(Set<String> inputSet) {
         Set<String> returnSet = new Set<String>();
         if(inputSet == null || inputSet.isEmpty()) return returnSet;
         for(String str :inputSet) {
@@ -130,8 +120,74 @@ public with sharing class CloneSObjectDAGUtility {
         return returnSet;
     }
 
-    private static String getFileName(String sObjectName) {
+    private  String getFileName(String sObjectName) {
         return sObjectName + '-' + timeNow + '.json';
     }
-
 }
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Id attachmentRecord = '0017F00002l6spTQAQ';
+List<WrapperClass> listOfWrapperClasses = new List<WrapperClass>();
+List<Account> accList = [
+    SELECT Id, name, description 
+    FROM Account 
+    WHERE id = '0017F00002l6spTQAQ'
+];
+WrapperClass accountRecords = new WrapperClass(
+    accList,
+    null,
+    'Account',
+    false,
+    null
+);
+listOfWrapperClasses.add(accountRecords);
+
+WrapperClass contactRecords = new WrapperClass(
+    [
+        SELECT Id, AccountId, account.name,account.description, lastname 
+        FROM contact 
+        WHERE Accountid = :accList[0].Id
+    ],
+    new Set<String> {
+        'AccountId'
+    },
+    'Contact',
+    false,
+    null
+);
+listOfWrapperClasses.add(contactRecords);
+
+WrapperClass opportunityRecords = new WrapperClass(
+    [
+        SELECT Id, name, Amount, CloseDate, AccountId, StageName 
+        FROM Opportunity 
+        WHERE Accountid = :accList[0].Id
+    ],
+    new Set<String> {
+        'AccountId'
+    },
+    'Opportunity',
+    false,
+    null
+);
+listOfWrapperClasses.add(opportunityRecords);
+
+WrapperClass genericRecords = new WrapperClass(
+    [
+        SELECT Id, Name, Value__c, custom_parent__c, Opportuntiy__c, Identifier__c 
+        FROM Generic_Custom_JSON__c
+        WHERE Identifier__c = 'testIden'
+    ],
+    new Set<String> {
+        'Opportuntiy__c',
+        'custom_parent__c'
+    },
+    'Generic_Custom_JSON__c',
+    false,
+    'custom_parent__c'
+);
+listOfWrapperClasses.add(genericRecords);
+
+
+new CloneSObjectDAGUtility().main(listOfWrapperClasses, attachmentRecord);
