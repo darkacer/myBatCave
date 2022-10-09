@@ -1,16 +1,16 @@
 public class CloneSObjectDAGSelfRefObject {
-    private static String timeNow = String.valueOf(System.now());
-    private static Id recordId = '0067F000004qj3uQAA';
-    private static String refObjectName;
-    private static string parentFieldName = 'Parent_Object__c';
-    private static Integer counter = 0;
+    private static String timeNow = String.valueOf(System.now()).deleteWhiteSpace();
+    private static Id DAG_recordId = '0067F000004qj3uQAA';
+    private static String DAG_refObjectName;
+    private static string DAG_parentFieldName = 'Parent_Object__c';
+    private static Integer DAG_counter = 0;
     private static Map<String, String> childToParentMap = new Map<String, String>();
     private static Map<String, Object> idToRecordMap = new Map<String, Object>();
     
-    public static List<Attachment> main(String str, String parentRefName, Id recId, String refObjName) {
-        recordId = recId;
-        refObjectName = refObjName;
-        parentFieldName = parentRefName;
+    public static List<Attachment> DAG_main(String str, String parentRefName, Id recId, String refObjName) {
+        DAG_recordId = recId;
+        DAG_refObjectName = refObjName;
+        DAG_parentFieldName = parentRefName;
         Map<String, Object> m = (Map<String, Object>) JSON.deserializeUntyped(str);
         
         for(object obj : (List<object>)m.get('records')) {
@@ -65,8 +65,8 @@ public class CloneSObjectDAGSelfRefObject {
     }
     
     private static string getParentRef(Object obj) {
-        map<String, Object> RespObjMap = (map<String, Object>)obj;
-        String srt = (String)RespObjMap.get(parentFieldName);
+        Map<String, Object> RespObjMap = (map<String, Object>)obj;
+        String srt = (String)RespObjMap.get(DAG_parentFieldName);
         return srt?.replace('@', '');
     }
     
@@ -78,8 +78,8 @@ public class CloneSObjectDAGSelfRefObject {
         return srt?.replace('@', '');
     }
 
-    public static String generatCounterFileName(Integer counter, String refObjectName) {
-        return refObjectName + 'part'+counter++ + '-' + timeNow +'.json';
+    public static String generatCounterFileName(Integer DAG_counter, String DAG_refObjectName) {
+        return DAG_refObjectName + 'part'+ DAG_counter++ + '-' + timeNow +'.json';
     }
 
     private static List<Attachment> reccursiveMethod(List<String> childs, Map<String, List<String>> parentToChildMap, List<Attachment> attachmentList) {
@@ -87,8 +87,8 @@ public class CloneSObjectDAGSelfRefObject {
         System.debug('parentToChildMap ' + parentToChildMap);
         
         Attachment tempattachment = new Attachment();
-        tempattachment.ParentId = recordId;
-        tempattachment.Name = generatCounterFileName(counter++, refObjectName);
+        tempattachment.ParentId = DAG_recordId;
+        tempattachment.Name = generatCounterFileName(DAG_counter++, DAG_refObjectName);
         tempattachment.Body = Blob.valueOf(decorateObject(childs));
         attachmentList.add(tempattachment);
 
